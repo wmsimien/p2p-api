@@ -2,12 +2,15 @@ package com.avery.procure2pay.controller;
 
 import com.avery.procure2pay.model.Employee;
 import com.avery.procure2pay.repository.EmployeeRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
@@ -27,6 +30,9 @@ class EmployeeControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    ObjectMapper mapper;
+
     @MockBean
     private EmployeeRepository employeeRepository;
 
@@ -39,8 +45,7 @@ class EmployeeControllerTest {
     void getAllEmployees_success() throws Exception {
         // build data to retrieve
         List<Employee> employeeList = new ArrayList<>(Arrays.asList(EMPLOYEE_1, EMPLOYEE_2));
-
-        // test whether repository returns two employees
+        // test whether repository returns two employees api/employees/
         when(employeeRepository.findAll()).thenReturn(employeeList);
         // build endpoint that will return APPLICATION JSON
         mockMvc.perform(MockMvcRequestBuilders
@@ -54,16 +59,37 @@ class EmployeeControllerTest {
 
     @Test
     void getEmployeeById_success() throws Exception {
-        // repository
+        // test repository
         when(employeeRepository.findById(EMPLOYEE_2.getId())).thenReturn(Optional.of(EMPLOYEE_2));
-        // test endpoint api/employees/2
+        // test endpoint api/employees/2/
         mockMvc.perform(MockMvcRequestBuilders
-                .get("/api/employees/{employeeId}", "2")
+                .get("/api/employees/{employeeId}/", "2")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.id").value(EMPLOYEE_2.getId()))
                 .andExpect(jsonPath("$.data.firstName").value(EMPLOYEE_2.getFirstName()))
                 .andExpect(jsonPath("$.data.lastName").value(EMPLOYEE_2.getLastName()))
+                .andExpect(jsonPath("$.message").value("success"))
+                .andDo(print());
+    }
+
+    @Test
+    void createEmployee_success() throws Exception {
+        // test repository
+        when(employeeRepository.save(Mockito.any(Employee.class))).thenReturn(EMPLOYEE_1);
+        // build mock request to test endpoint api/employees/
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.post("/api/employees/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(this.mapper.writeValueAsString(EMPLOYEE_1));
+        // make mock request
+        mockMvc.perform(mockRequest)
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$", notNullValue()))
+                .andExpect(jsonPath("$.data.id").value(EMPLOYEE_1.getId()))
+                .andExpect(jsonPath("$.data.firstName").value(EMPLOYEE_1.getFirstName()))
+                .andExpect(jsonPath("$.data.lastName").value(EMPLOYEE_1.getLastName()))
+                .andExpect(jsonPath("$.data.department").value(EMPLOYEE_1.getDepartment()))
                 .andExpect(jsonPath("$.message").value("success"))
                 .andDo(print());
     }

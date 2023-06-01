@@ -5,10 +5,7 @@ import com.avery.procure2pay.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,8 +24,8 @@ public class EmployeeController {
     static HashMap<String, Object> message = new HashMap<>();
 
     /**
-     *
-     * @return
+     * Method obtains listing of all employees
+     * @return ResponseEntity to configure HTTP response to be NOT_FOUND when no employees are found and OK when employee results are found.
      */
     @GetMapping(path="/employees/")
     public ResponseEntity<?> getAllEmployees() {
@@ -44,11 +41,11 @@ public class EmployeeController {
     }
 
     /**
-     *
-     * @param employeeId
-     * @return
+     * Methods obtains the specified employee by id.
+     * @param employeeId Argument taken from url path.
+     * @return Response of HttpStatus OK when specified employee record is found and HttpStatus of NOT_FOUND when employee of the specified id is not found.
      */
-    @GetMapping(path="/employees/{employeeId}")
+    @GetMapping(path="/employees/{employeeId}/")
     public ResponseEntity<?> getEmployeeById(@PathVariable(value="employeeId") Long employeeId) {
         Optional<Employee> employee = employeeRepository.findById(employeeId);
         if (employee.isPresent()) {
@@ -58,6 +55,23 @@ public class EmployeeController {
         } else {
             message.put("message", "cannot find employee with id " + employeeId);
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    /**
+     * Method creates a new employee record.
+     * @return Response of HttpStatus CREATED when new employee record is created and HttpStatus of OK when a new employee record cannot be created.
+     */
+    @PostMapping("/employees/")
+    public ResponseEntity<?> createEmployee(@RequestBody Employee employee) {
+        Employee newEmployee = employeeRepository.save(employee);
+        if (newEmployee != null){
+            message.put("message", "success");
+            message.put("data", newEmployee);
+            return new ResponseEntity<>(message, HttpStatus.CREATED);
+        } else {
+            message.put("message", "unable to create an employee at this time");
+            return new ResponseEntity<>(message, HttpStatus.OK);
         }
     }
 }
