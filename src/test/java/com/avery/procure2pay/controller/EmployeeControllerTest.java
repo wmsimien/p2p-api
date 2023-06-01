@@ -1,9 +1,9 @@
 package com.avery.procure2pay.controller;
 
 import com.avery.procure2pay.model.Employee;
-import com.avery.procure2pay.repository.EmployeeRepository;
 import com.avery.procure2pay.service.EmployeeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +35,7 @@ class EmployeeControllerTest {
     @Autowired
     ObjectMapper mapper;
 
-    @MockBean
-    private EmployeeRepository employeeRepository;
+
     @MockBean
     private EmployeeService employeeService;
 
@@ -46,11 +45,12 @@ class EmployeeControllerTest {
     Employee EMPLOYEE_2 = new Employee(2L, "Hattie", "Monroe", "Procurement", "Manager", "hattie.monroe@gmail.com", "87932-002");
 
     @Test
+    @DisplayName("get a list of all employees successfull")
     void getAllEmployees_success() throws Exception {
         // build data to retrieve
         List<Employee> employeeList = new ArrayList<>(Arrays.asList(EMPLOYEE_1, EMPLOYEE_2));
-        // test whether repository returns two employees api/employees/
-        when(employeeRepository.findAll()).thenReturn(employeeList);
+        // test whether employee service returns two employees api/employees/
+        when(employeeService.getAllEmployees()).thenReturn(employeeList);
         // build endpoint that will return APPLICATION JSON
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/employees/")
@@ -62,9 +62,10 @@ class EmployeeControllerTest {
     }
 
     @Test
+    @DisplayName("get an employee by id successfully")
     void getEmployeeById_success() throws Exception {
-        // test repository
-        when(employeeRepository.findById(EMPLOYEE_2.getId())).thenReturn(Optional.of(EMPLOYEE_2));
+        // test service
+        when(employeeService.getEmployeeById(EMPLOYEE_2.getId())).thenReturn(Optional.of(EMPLOYEE_2));
         // test endpoint api/employees/2/
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/employees/{employeeId}/", "2")
@@ -78,9 +79,10 @@ class EmployeeControllerTest {
     }
 
     @Test
+    @DisplayName("create an employee record successfully")
     void createEmployee_success() throws Exception {
-        // test repository
-        when(employeeRepository.save(Mockito.any(Employee.class))).thenReturn(EMPLOYEE_1);
+        // test service
+        when(employeeService.createEmployee(Mockito.any(Employee.class))).thenReturn(EMPLOYEE_1);
         // build mock request to test endpoint api/employees/
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.post("/api/employees/")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -99,11 +101,12 @@ class EmployeeControllerTest {
     }
 
     @Test
+    @DisplayName("update an employee by return 404")
     void updateEmployeeById_recordNotFound() throws Exception {
         // create employee records
         Employee newEmployee = new Employee("Katty", "Maul", "Procurement", "Buyer", "katty.maul@gmail.com", "");
-        // test repository
-        when(employeeRepository.findById(newEmployee.getId())).thenReturn(Optional.of(newEmployee));
+        // test service
+        when(employeeService.updateEmployeeById(anyLong(), Mockito.any(Employee.class))).thenReturn(Optional.empty());
         // build mock request to test endpoint api/employees/1/
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.get("/api/employees/{employeeId}/", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -117,6 +120,7 @@ class EmployeeControllerTest {
     }
 
     @Test
+    @DisplayName("update an employee by return 200")
     void updateEmployeeById_success() throws Exception {
         // create employee records
         Employee newEmployee = new Employee("Katty", "Maul", "Procurement", "Buyer", "katty.maul@gmail.com", "");

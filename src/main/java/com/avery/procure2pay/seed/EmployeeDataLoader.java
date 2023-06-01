@@ -11,8 +11,8 @@ import java.util.logging.Logger;
 
 @Component
 public class EmployeeDataLoader implements CommandLineRunner {
-
     Logger logger = Logger.getLogger(EmployeeDataLoader.class.getName());
+
     @Autowired
     EmployeeRepository employeeRepository;
     @Override
@@ -31,6 +31,6 @@ public class EmployeeDataLoader implements CommandLineRunner {
             employeeRepository.save(employee2);
             employeeRepository.save(employee3);
         }
-logger.info("count of employeeRepository:  " + employeeRepository.count());
+        logger.info("Count of seed employee records from EmployeeDataLoader:  " + employeeRepository.count());
     }
 }

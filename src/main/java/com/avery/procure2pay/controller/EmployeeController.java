@@ -2,7 +2,6 @@ package com.avery.procure2pay.controller;
 
 import com.avery.procure2pay.exception.InformationNotFoundException;
 import com.avery.procure2pay.model.Employee;
-import com.avery.procure2pay.repository.EmployeeRepository;
 import com.avery.procure2pay.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,15 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping(path="/api")
 public class EmployeeController {
-    Logger logger = Logger.getLogger(EmployeeController.class.getName());
 
-    @Autowired
-    private EmployeeRepository employeeRepository;
     @Autowired
     EmployeeService employeeService;
 
@@ -33,7 +28,7 @@ public class EmployeeController {
      */
     @GetMapping(path="/employees/")
     public ResponseEntity<?> getAllEmployees() {
-        List<Employee> employeeList = employeeRepository.findAll();
+        List<Employee> employeeList = employeeService.getAllEmployees();
         if (employeeList.isEmpty()){
             message.put("message", "cannot find any employees");
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
@@ -51,7 +46,7 @@ public class EmployeeController {
      */
     @GetMapping(path="/employees/{employeeId}/")
     public ResponseEntity<?> getEmployeeById(@PathVariable(value="employeeId") Long employeeId) {
-        Optional<Employee> employee = employeeRepository.findById(employeeId);
+        Optional<Employee> employee = employeeService.getEmployeeById(employeeId);
         if (employee.isPresent()) {
             message.put("message", "success");
             message.put("data", employee.get());
@@ -68,7 +63,7 @@ public class EmployeeController {
      */
     @PostMapping("/employees/")
     public ResponseEntity<?> createEmployee(@RequestBody Employee employee) {
-        Employee newEmployee = employeeRepository.save(employee);
+        Employee newEmployee = employeeService.createEmployee(employee);
         if (newEmployee != null){
             message.put("message", "success");
             message.put("data", newEmployee);
@@ -97,5 +92,4 @@ public class EmployeeController {
             return new ResponseEntity<>(message, HttpStatus.OK);
         }
     }
-
 }
