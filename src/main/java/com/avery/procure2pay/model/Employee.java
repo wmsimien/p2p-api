@@ -25,16 +25,29 @@ public class Employee {
     @Column(unique = true)
     private String email;
 
+    @Column
+    private String gl_acct_no;
+
     public Employee() {
     }
 
-    public Employee(Long id, String firstName, String lastName, String department, String role, String email) {
+    public Employee(Long id, String firstName, String lastName, String department, String role, String email, String gl_acct_no) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.department = department;
         this.role = role;
         this.email = email;
+        this.gl_acct_no = gl_acct_no;
+    }
+
+    public Employee(String firstName, String lastName, String department, String role, String email, String gl_acct_no) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.department = department;
+        this.role = role;
+        this.email = email;
+        this.gl_acct_no = gl_acct_no;
     }
 
     public Long getId() {
@@ -95,5 +108,13 @@ public class Employee {
                 ", role='" + role + '\'' +
                 ", email='" + email + '\'' +
                 '}';
+    }
+
+    public String getGl_acct_no() {
+        return gl_acct_no;
+    }
+
+    public void setGl_acct_no(String gl_acct_no) {
+        this.gl_acct_no = gl_acct_no;
     }
 }
