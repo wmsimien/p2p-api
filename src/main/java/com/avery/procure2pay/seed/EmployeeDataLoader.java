@@ -23,9 +23,9 @@ public class EmployeeDataLoader implements CommandLineRunner {
     private void loadEmployeeData() {
         if (employeeRepository.count() == 0) {
             // create employee records
-            Employee employee1 = new Employee("Cindy", "Smith", "Sales", "Rep", "cindy.smith@gmail.com");
-            Employee employee2 = new Employee("Connie", "Jones", "Cooperate", "Receptionist", "connie.jones@gmail.com");
-            Employee employee3 = new Employee("Timmy", "Blue", "Facilities", "Manager", "timmy.blue@gmail.com");
+            Employee employee1 = new Employee("Cindy", "Smith", "Sales", "Rep", "cindy.smith@gmail.com", "");
+            Employee employee2 = new Employee("Connie", "Jones", "Cooperate", "Receptionist", "connie.jones@gmail.com", "");
+            Employee employee3 = new Employee("Timmy", "Blue", "Facilities", "Manager", "timmy.blue@gmail.com", "878787-001");
             // save employee records
             employeeRepository.save(employee1);
             employeeRepository.save(employee2);

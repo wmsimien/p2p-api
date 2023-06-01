@@ -1,7 +1,9 @@
 package com.avery.procure2pay.controller;
 
+import com.avery.procure2pay.exception.InformationNotFoundException;
 import com.avery.procure2pay.model.Employee;
 import com.avery.procure2pay.repository.EmployeeRepository;
+import com.avery.procure2pay.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,8 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+    @Autowired
+    EmployeeService employeeService;
 
     // handles custom messages
     static HashMap<String, Object> message = new HashMap<>();
@@ -74,4 +78,24 @@ public class EmployeeController {
             return new ResponseEntity<>(message, HttpStatus.OK);
         }
     }
+
+    /**
+     * Method update employee record based on specified employee id
+     * @param employeeId Employee id to update
+     * @param employeeObject Employee data to update
+     * @return Response of HttpStatus OK when specified employee record is updated successfully and HttpStatus of NOT_FOUND when specified employee record is not found.
+     */
+    @PutMapping(path="/employees/{employeeId}/")
+    public ResponseEntity<?> updateEmployeeById(@PathVariable(value="employeeId") Long employeeId, @RequestBody Employee employeeObject) throws InformationNotFoundException {
+        Optional<Employee> employeeToUpdate = employeeService.updateEmployeeById(employeeId, employeeObject);
+        if (employeeToUpdate.isEmpty()) {
+            message.put("message", "cannot find employee with id " + employeeId);
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        } else {
+            message.put("message", "employee with id " + employeeId + " has been successfully updated");
+            message.put("data", employeeToUpdate.get());
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        }
+    }
+
 }

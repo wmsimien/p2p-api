@@ -2,6 +2,7 @@ package com.avery.procure2pay.controller;
 
 import com.avery.procure2pay.model.Employee;
 import com.avery.procure2pay.repository.EmployeeRepository;
+import com.avery.procure2pay.service.EmployeeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -20,6 +21,7 @@ import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -35,11 +37,13 @@ class EmployeeControllerTest {
 
     @MockBean
     private EmployeeRepository employeeRepository;
+    @MockBean
+    private EmployeeService employeeService;
 
     // create standard Employee records
-    Employee EMPLOYEE_1 = new Employee(1L, "Patty", "Paul", "Procurement", "Buyer", "patty.paul@gmail.com");
+    Employee EMPLOYEE_1 = new Employee(1L, "Patty", "Paul", "Procurement", "Buyer", "patty.paul@gmail.com", "");
 
-    Employee EMPLOYEE_2 = new Employee(2L, "Hattie", "Monroe", "Procurement", "Manager", "hattie.monroe@gmail.com");
+    Employee EMPLOYEE_2 = new Employee(2L, "Hattie", "Monroe", "Procurement", "Manager", "hattie.monroe@gmail.com", "87932-002");
 
     @Test
     void getAllEmployees_success() throws Exception {
@@ -93,4 +97,47 @@ class EmployeeControllerTest {
                 .andExpect(jsonPath("$.message").value("success"))
                 .andDo(print());
     }
+
+    @Test
+    void updateEmployeeById_recordNotFound() throws Exception {
+        // create employee records
+        Employee newEmployee = new Employee("Katty", "Maul", "Procurement", "Buyer", "katty.maul@gmail.com", "");
+        // test repository
+        when(employeeRepository.findById(newEmployee.getId())).thenReturn(Optional.of(newEmployee));
+        // build mock request to test endpoint api/employees/1/
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.get("/api/employees/{employeeId}/", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON);
+        // make mock request
+        mockMvc.perform(mockRequest)
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", notNullValue()))
+                .andExpect(jsonPath("$.message").value("cannot find employee with id 1"))
+                .andDo(print());
+    }
+
+    @Test
+    void updateEmployeeById_success() throws Exception {
+        // create employee records
+        Employee newEmployee = new Employee("Katty", "Maul", "Procurement", "Buyer", "katty.maul@gmail.com", "");
+        Employee UpdatedEmployee = new Employee("UpdatedKatty", "UpdatedMaul", "Procurement", "Buyer", "katty.maul@gmail.com", "");
+        // test repository
+        when(employeeService.updateEmployeeById(anyLong(), Mockito.any(Employee.class))).thenReturn(Optional.of(UpdatedEmployee));
+        // build mock request to test endpoint api/employees/1/
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.put("/api/employees/{employeeId}/", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(this.mapper.writeValueAsString(newEmployee));
+        // make mock request
+        mockMvc.perform(mockRequest)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", notNullValue()))
+                .andExpect(jsonPath("$.data.id").value(UpdatedEmployee.getId()))
+                .andExpect(jsonPath("$.data.firstName").value(UpdatedEmployee.getFirstName()))
+                .andExpect(jsonPath("$.data.lastName").value(UpdatedEmployee.getLastName()))
+                .andExpect(jsonPath("$.data.department").value(UpdatedEmployee.getDepartment()))
+                .andExpect(jsonPath("$.message").value("employee with id 1 has been successfully updated"))
+                .andDo(print());
+    }
+
 }
