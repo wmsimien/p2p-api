@@ -3,7 +3,7 @@ package com.avery.procure2pay.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name="itemfavs")
+@Table(name="itemfavorites")
 public class ItemFavorites {
 
     @Id
@@ -18,17 +18,22 @@ public class ItemFavorites {
     private String description;
 
     @Column
-    private Float unit_price;
+    private Double unit_price;
+
+    @Column
+    private String uom;
 
     public ItemFavorites() {
     }
 
-    public ItemFavorites(Long id, String name, String description, Float unit_price) {
+    public ItemFavorites(Long id, String name, String description, Double unit_price, String uom) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.unit_price = unit_price;
+        this.uom = uom;
     }
+
 
     public Long getId() {
         return id;
@@ -54,11 +59,11 @@ public class ItemFavorites {
         this.description = description;
     }
 
-    public Float getUnit_price() {
+    public Double getUnit_price() {
         return unit_price;
     }
 
-    public void setUnit_price(Float unit_price) {
+    public void setUnit_price(Double unit_price) {
         this.unit_price = unit_price;
     }
 
@@ -70,5 +75,13 @@ public class ItemFavorites {
                 ", description='" + description + '\'' +
                 ", unit_price=" + unit_price +
                 '}';
+    }
+
+    public String getUom() {
+        return uom;
+    }
+
+    public void setUom(String uom) {
+        this.uom = uom;
     }
 }
