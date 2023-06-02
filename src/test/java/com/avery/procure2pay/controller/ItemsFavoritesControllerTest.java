@@ -2,6 +2,7 @@ package com.avery.procure2pay.controller;
 
 import com.avery.procure2pay.model.ItemFavorites;
 import com.avery.procure2pay.repository.ItemFavoritesRepository;
+import com.avery.procure2pay.service.ItemFavoritesService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,8 @@ class ItemsFavoritesControllerTest {
 
     @MockBean
     private ItemFavoritesRepository itemFavoritesRepository;
+    @MockBean
+    private ItemFavoritesService itemFavoritesService;
 
 
     // create standard item fovarites
@@ -47,8 +50,8 @@ class ItemsFavoritesControllerTest {
     void getAllItemFavorites_success() throws Exception {
         // build data to retrieve
         List<ItemFavorites> itemFavoritesList = new ArrayList<>(Arrays.asList(FAVITEM_1, FAVITEM_2, FAVITEM_3));
-        // itemfavorites repository should return three favitems
-        when(itemFavoritesRepository.findAll()).thenReturn(itemFavoritesList);
+        // itemfavorites service should return three favitems
+        when(itemFavoritesService.getAllItemFavorites()).thenReturn(itemFavoritesList);
         // build endpoint which should return a json object
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/items/")
@@ -64,7 +67,7 @@ class ItemsFavoritesControllerTest {
     @DisplayName("should return 200 a specific fav item based itemId")
     void getItemFavoritesById_success() throws Exception {
         // test repository
-        when(itemFavoritesRepository.findById(FAVITEM_2.getId())).thenReturn(Optional.of(FAVITEM_2));
+        when(itemFavoritesService.getItemFavoritesById(FAVITEM_2.getId())).thenReturn(Optional.of(FAVITEM_2));
         // test endpoint api/items/2/
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/items/{itemId}/", "2")

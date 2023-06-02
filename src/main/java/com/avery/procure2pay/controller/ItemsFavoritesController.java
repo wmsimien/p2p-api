@@ -4,6 +4,7 @@ package com.avery.procure2pay.controller;
 import com.avery.procure2pay.model.Employee;
 import com.avery.procure2pay.model.ItemFavorites;
 import com.avery.procure2pay.repository.ItemFavoritesRepository;
+import com.avery.procure2pay.service.ItemFavoritesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,8 @@ public class ItemsFavoritesController {
 
     @Autowired
     ItemFavoritesRepository itemFavoritesRepository;
+    @Autowired
+    ItemFavoritesService itemFavoritesService;
 
     static HashMap<String, Object> message = new HashMap<>();
 
@@ -32,7 +35,7 @@ public class ItemsFavoritesController {
      */
     @GetMapping(path="/items/")
     public ResponseEntity<?> getAllItemFavorites() {
-        List<ItemFavorites> itemFavoritesList = itemFavoritesRepository.findAll();
+        List<ItemFavorites> itemFavoritesList = itemFavoritesService.getAllItemFavorites();
         if (itemFavoritesList.isEmpty()) {
             message.put("message", "cannot find any item favorites");
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
@@ -43,9 +46,14 @@ public class ItemsFavoritesController {
         }
     }
 
+    /**
+     *
+     * @param itemId
+     * @return
+     */
     @GetMapping(path="/items/{itemId}")
     public ResponseEntity<?> getItemFavoritesById(@PathVariable(value="itemId") Long itemId) {
-            Optional<ItemFavorites> favItem = itemFavoritesRepository.findById(itemId);
+            Optional<ItemFavorites> favItem = itemFavoritesService.getItemFavoritesById(itemId);
             if (favItem.isPresent()) {
                 message.put("message", "success");
                 message.put("data", favItem.get());
