@@ -24,8 +24,6 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 class EmployeeServiceTest {
 
-    Logger logger = Logger.getLogger(EmployeeServiceTest.class.getName());
-
     @MockBean
     EmployeeRepository employeeRepository;
 
