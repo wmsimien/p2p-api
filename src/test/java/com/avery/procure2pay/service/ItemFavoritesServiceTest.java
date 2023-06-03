@@ -1,11 +1,11 @@
 package com.avery.procure2pay.service;
 
 import com.avery.procure2pay.model.ItemFavorites;
-import com.avery.procure2pay.model.Supplier;
 import com.avery.procure2pay.repository.ItemFavoritesRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -56,14 +56,38 @@ class ItemFavoritesServiceTest {
     }
 
     @Test
-    void createItemFavorites() {
+    @DisplayName("create a itemFavorite successfully")
+    void createItemFavorites_successfully() {
+        ItemFavorites newItemFavorite =  new ItemFavorites("NewSmall Tubing", "NewSmall Lite Tubing", 15.75, "pounds");
+        when(itemFavoritesRepository.save(Mockito.any(ItemFavorites.class))).thenReturn(newItemFavorite);
+
+        ItemFavorites createdItemFavorite = itemFavoritesService.createItemFavorites(newItemFavorite);
+
+        when(itemFavoritesService.createItemFavorites(Mockito.any(ItemFavorites.class))).thenReturn(newItemFavorite);
+
+        Assertions.assertNotNull(createdItemFavorite);
+        assertEquals(newItemFavorite.getName(), createdItemFavorite.getName());
     }
 
     @Test
-    void updateItemFavoritesById() {
+    @DisplayName("update an itemFavorite by id successfully")
+    void updateItemFavoritesById_success() {
+        ItemFavorites itemFavorite =  new ItemFavorites("NewSmall Tubing", "NewSmall Lite Tubing", 15.75, "pounds");
+
+        when(itemFavoritesRepository.findById(anyLong())).thenReturn(Optional.of(itemFavorite));
+
+        ItemFavorites itemFavoriteObject =  new ItemFavorites("UpdatedSmall Tubing", "UpdatedSmall Lite Tubing", 15.75, "pounds");
+
+        Optional<ItemFavorites> updatedItemFavorite = itemFavoritesService.updateItemFavoritesById(1L, itemFavoriteObject);
+
+        Assertions.assertEquals(updatedItemFavorite.get().getName(),itemFavoriteObject.getName());
     }
 
     @Test
-    void deleteItemFavorites() {
+    @DisplayName("delete an itemFavorite by id successfully")
+    void deleteItemFavorites_success() {
+        when(itemFavoritesRepository.findById(anyLong())).thenReturn(Optional.of(FAVITEM_2));
+        Optional<ItemFavorites> favItem = itemFavoritesService.deleteItemFavorites(FAVITEM_2.getId());
+        Assertions.assertNotNull(favItem);
     }
 }
