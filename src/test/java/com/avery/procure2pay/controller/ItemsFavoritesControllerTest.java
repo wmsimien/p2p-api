@@ -91,10 +91,10 @@ class ItemsFavoritesControllerTest {
     }
 
     @Test
-    @DisplayName("should create a new favorite item successfully")
+    @DisplayName("return 201 when creating a new favorite item successfully")
     void createItemFavorites_success() throws Exception{
         // test repository
-        when(itemFavoritesRepository.save(Mockito.any(ItemFavorites.class))).thenReturn(FAVITEM_3);
+        when(itemFavoritesService.createItemFavorites(Mockito.any(ItemFavorites.class))).thenReturn(FAVITEM_3);
         // build mock endpoint to test endpoint
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.post("/api/items/")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -112,4 +112,27 @@ class ItemsFavoritesControllerTest {
                 .andExpect(jsonPath("$.message").value("success"))
                 .andDo(print());
     }
+
+//    @Test
+//    @DisplayName("return 404 when not able to update favorite item")
+//    void updateItemFavoritesById_recordNotFound() throws Exception{
+//        // test repository
+//        when(itemFavoritesRepository.save(Mockito.any(ItemFavorites.class))).thenReturn(FAVITEM_3);
+//        // build mock endpoint to test endpoint
+//        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.post("/api/items/")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .accept(MediaType.APPLICATION_JSON)
+//                .content(this.mapper.writeValueAsString(FAVITEM_3));
+//        // make/perform mock request
+//        mockMvc.perform(mockRequest)
+//                .andExpect(status().isCreated())
+//                .andExpect(jsonPath("$", notNullValue()))
+//                .andExpect(jsonPath("$.data.id").value(FAVITEM_3.getId()))
+//                .andExpect(jsonPath("$.data.name").value(FAVITEM_3.getName()))
+//                .andExpect(jsonPath("$.data.description").value(FAVITEM_3.getDescription()))
+//                .andExpect(jsonPath("$.data.unit_price").value(FAVITEM_3.getUnit_price()))
+//                .andExpect(jsonPath("$.data.uom").value(FAVITEM_3.getUom()))
+//                .andExpect(jsonPath("$.message").value("success"))
+//                .andDo(print());
+//    }
 }

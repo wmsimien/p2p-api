@@ -1,6 +1,7 @@
 package com.avery.procure2pay.controller;
 
 
+import com.avery.procure2pay.exception.InformationNotFoundException;
 import com.avery.procure2pay.model.Employee;
 import com.avery.procure2pay.model.ItemFavorites;
 import com.avery.procure2pay.repository.ItemFavoritesRepository;
@@ -31,7 +32,7 @@ public class ItemsFavoritesController {
      * @return A response of 404 (NOT_FOUND) status when not able to return any favorite items and return a 200 (OK) status when favorite items are found.
      */
     @GetMapping(path="/items/")
-    public ResponseEntity<?> getAllItemFavorites() {
+    public ResponseEntity<?> getAllItemFavorites() throws InformationNotFoundException {
         List<ItemFavorites> itemFavoritesList = itemFavoritesService.getAllItemFavorites();
         if (itemFavoritesList.isEmpty()) {
             message.put("message", "cannot find any item favorites");
@@ -49,7 +50,7 @@ public class ItemsFavoritesController {
      * @return A response status of OK (200) if found or 404 (NOT_FOUND).
      */
     @GetMapping(path="/items/{itemId}")
-    public ResponseEntity<?> getItemFavoritesById(@PathVariable(value="itemId") Long itemId) {
+    public ResponseEntity<?> getItemFavoritesById(@PathVariable(value="itemId") Long itemId) throws InformationNotFoundException {
         Optional<ItemFavorites> favItem = itemFavoritesService.getItemFavoritesById(itemId);
         if (favItem.isPresent()) {
             message.put("message", "success");
@@ -62,20 +63,40 @@ public class ItemsFavoritesController {
     }
 
     /**
-     *
-     * @param itemFavoritesObject
-     * @return
+     * Endpoint calls method to create a new favorite item record.
+     * @param itemFavoritesObject Favorite item data to create new item record.
+     * @return Response stat us of 201 (CREATED) when successfully created and status of 404 when not able to create
      */
     @PostMapping(path="/items/")
-    public ResponseEntity<?> createItemFavorites(@RequestBody ItemFavorites itemFavoritesObject) {
-        ItemFavorites itemFavorites = itemFavoritesRepository.save(itemFavoritesObject);
+    public ResponseEntity<?> createItemFavorites(@RequestBody ItemFavorites itemFavoritesObject) throws InformationNotFoundException {
+        ItemFavorites itemFavorites = itemFavoritesService.createItemFavorites(itemFavoritesObject);
         if (itemFavorites == null) {
-            message.put("message", "cannot find create item favorites");
+            message.put("message", "cannot find create item favorite");
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         } else {
             message.put("message", "success");
             message.put("data", itemFavorites);
             return new ResponseEntity<>(message, HttpStatus.CREATED);
+        }
+    }
+
+    /**
+     * Endpoint calls method to update a specific favorite item based on the item id with the supplied data elements.
+     * @param itemId Specific id of the favorite item to update.
+     * @param itemFavoritesObject Favorite item data elements to update favorite id with/
+     * @return Response of 200 (OK) when the specific item is updated and 404 (NOT_FOUND) when not able to.
+     * @throws InformationNotFoundException Response message.
+     */
+    @PutMapping(path="/items/{itemId}")
+    public ResponseEntity<?> updateItemFavoritesById(@PathVariable(value="itemId") Long itemId, @RequestBody ItemFavorites itemFavoritesObject) throws InformationNotFoundException {
+        Optional<ItemFavorites> favItemToUpdate = itemFavoritesRepository.findById(itemId);
+        if (favItemToUpdate.isEmpty()) {
+            message.put("message", "item favorite with id " + itemId + " has been successfully updated");
+            message.put("data", favItemToUpdate.get());
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else {
+            message.put("message", "cannot find favorite item with id " + itemId);
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         }
     }
 

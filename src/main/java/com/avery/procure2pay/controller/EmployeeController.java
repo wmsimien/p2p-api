@@ -27,7 +27,7 @@ public class EmployeeController {
      * @return ResponseEntity to configure HTTP response to be NOT_FOUND when no employees are found and OK when employee results are found.
      */
     @GetMapping(path="/employees/")
-    public ResponseEntity<?> getAllEmployees() {
+    public ResponseEntity<?> getAllEmployees() throws InformationNotFoundException {
         List<Employee> employeeList = employeeService.getAllEmployees();
         if (employeeList.isEmpty()){
             message.put("message", "cannot find any employees");
@@ -45,7 +45,7 @@ public class EmployeeController {
      * @return Response of HttpStatus OK when specified employee record is found and HttpStatus of NOT_FOUND when employee of the specified id is not found.
      */
     @GetMapping(path="/employees/{employeeId}/")
-    public ResponseEntity<?> getEmployeeById(@PathVariable(value="employeeId") Long employeeId) {
+    public ResponseEntity<?> getEmployeeById(@PathVariable(value="employeeId") Long employeeId) throws InformationNotFoundException {
         Optional<Employee> employee = employeeService.getEmployeeById(employeeId);
         if (employee.isPresent()) {
             message.put("message", "success");
