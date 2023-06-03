@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
@@ -63,6 +64,24 @@ class PurchaseOrderControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data", hasSize(2)))
+                .andExpect(jsonPath("$.message").value("success"))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("get purchase order by id success")
+    void getPurchaseOrderById_success() throws Exception {
+        PO_1.setId(1L);
+        PO_1.setItem(FAVITEM_1);
+        PO_1.setQty(2.0);
+        PO_1.setCreatedDate(LocalDate.parse("2023-06-01"));
+
+        when(purchaseOrderRepository.findById(PO_1.getId())).thenReturn(Optional.of(PO_1));
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/purchase-orders/{purchaseOrderId}", 1L)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.id").value(PO_1.getId()))
                 .andExpect(jsonPath("$.message").value("success"))
                 .andDo(print());
     }
