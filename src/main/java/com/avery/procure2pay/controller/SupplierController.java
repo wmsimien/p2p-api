@@ -56,7 +56,7 @@ public class SupplierController {
      */
     @GetMapping(path="/suppliers/{supplierId}")
     public ResponseEntity<?> getSupplierById(@PathVariable Long supplierId) throws InformationNotFoundException {
-        Optional<Supplier> supplier =  supplierRepository.findById(supplierId);
+        Optional<Supplier> supplier =  supplierService.getSupplierById(supplierId);
         if (supplier.isPresent()) {
             message.put("message", "success");
             message.put("data", supplier);

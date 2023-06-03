@@ -1,6 +1,7 @@
 package com.avery.procure2pay.service;
 
 
+import com.avery.procure2pay.model.Employee;
 import com.avery.procure2pay.model.Supplier;
 import com.avery.procure2pay.repository.SupplierRepository;
 import org.junit.jupiter.api.Assertions;
@@ -13,7 +14,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -38,6 +41,18 @@ class SupplierServiceTest {
 
         List<Supplier> supplierList = supplierService.getAllSuppliers();
         Assertions.assertEquals(2, supplierList.size());
+    }
+
+    @Test
+    @DisplayName("get a supplier by id")
+    void getSupplierById() {
+        // mock supplierRepository findById()
+        when(supplierRepository.findById(anyLong())).thenReturn(Optional.of(SUPPLIER_2));
+
+        Optional<Supplier> supplier = supplierService.getSupplierById(2L);
+
+        Assertions.assertTrue(supplier.isPresent());
+        Assertions.assertEquals(2, supplier.get().getId());
     }
 
 

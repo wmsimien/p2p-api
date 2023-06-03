@@ -63,14 +63,18 @@ class SupplierControllerTest {
     @Test
     @DisplayName("get supplier by id successfully")
     void getSupplierById_success() throws Exception {
-        // supplier repository should return supplier
-        when(supplierRepository.findById(SUPPLIER_2.getId())).thenReturn(Optional.of(SUPPLIER_2));
+        // supplier service should return supplier
+        when(supplierService.getSupplierById(SUPPLIER_2.getId())).thenReturn(Optional.of(SUPPLIER_2));
         // build endpoint which should return a json object
         mockMvc.perform(MockMvcRequestBuilders.get("/api/suppliers/{supplierId}/", 2L)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.id").value(SUPPLIER_2.getId()))
                 .andExpect(jsonPath("$.data.name").value(SUPPLIER_2.getName()))
+                .andExpect(jsonPath("$.data.contact_name").value(SUPPLIER_2.getContact_name()))
+                .andExpect(jsonPath("$.data.contact_phone").value(SUPPLIER_2.getContact_phone()))
+                .andExpect(jsonPath("$.data.address").value(SUPPLIER_2.getAddress()))
+                .andExpect(jsonPath("$.message").value("success"))
                 .andDo(print());
 
     }
