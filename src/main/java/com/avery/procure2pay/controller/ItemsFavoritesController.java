@@ -49,7 +49,7 @@ public class ItemsFavoritesController {
      * @param itemId Specific id of the favorite or most used it.
      * @return A response status of OK (200) if found or 404 (NOT_FOUND).
      */
-    @GetMapping(path="/items/{itemId}")
+    @GetMapping(path="/items/{itemId}/")
     public ResponseEntity<?> getItemFavoritesById(@PathVariable(value="itemId") Long itemId) throws InformationNotFoundException {
         Optional<ItemFavorites> favItem = itemFavoritesService.getItemFavoritesById(itemId);
         if (favItem.isPresent()) {
@@ -87,16 +87,16 @@ public class ItemsFavoritesController {
      * @return Response of 200 (OK) when the specific item is updated and 404 (NOT_FOUND) when not able to.
      * @throws InformationNotFoundException Response message.
      */
-    @PutMapping(path="/items/{itemId}")
+    @PutMapping(path="/items/{itemId}/")
     public ResponseEntity<?> updateItemFavoritesById(@PathVariable(value="itemId") Long itemId, @RequestBody ItemFavorites itemFavoritesObject) throws InformationNotFoundException {
-        Optional<ItemFavorites> favItemToUpdate = itemFavoritesRepository.findById(itemId);
+        Optional<ItemFavorites> favItemToUpdate = itemFavoritesService.updateItemFavoritesById(itemId, itemFavoritesObject);
         if (favItemToUpdate.isEmpty()) {
+            message.put("message", "cannot find favorite item with id " + itemId);
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        } else {
             message.put("message", "item favorite with id " + itemId + " has been successfully updated");
             message.put("data", favItemToUpdate.get());
             return new ResponseEntity<>(message, HttpStatus.OK);
-        } else {
-            message.put("message", "cannot find favorite item with id " + itemId);
-            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         }
     }
 

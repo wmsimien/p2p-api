@@ -34,6 +34,13 @@ public class ItemFavorites {
         this.uom = uom;
     }
 
+    public ItemFavorites(String name, String description, Double unit_price, String uom) {
+        this.name = name;
+        this.description = description;
+        this.unit_price = unit_price;
+        this.uom = uom;
+    }
+
 
     public Long getId() {
         return id;

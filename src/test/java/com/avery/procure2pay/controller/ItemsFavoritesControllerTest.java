@@ -1,5 +1,6 @@
 package com.avery.procure2pay.controller;
 
+import com.avery.procure2pay.model.Employee;
 import com.avery.procure2pay.model.ItemFavorites;
 import com.avery.procure2pay.repository.ItemFavoritesRepository;
 import com.avery.procure2pay.service.ItemFavoritesService;
@@ -25,6 +26,7 @@ import java.util.Optional;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -78,7 +80,7 @@ class ItemsFavoritesControllerTest {
         when(itemFavoritesService.getItemFavoritesById(FAVITEM_2.getId())).thenReturn(Optional.of(FAVITEM_2));
         // test endpoint api/items/2/
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/items/{itemId}/", "2")
+                        .get("/api/items/{itemId}/", 2L)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.id").value(FAVITEM_2.getId()))
@@ -113,26 +115,48 @@ class ItemsFavoritesControllerTest {
                 .andDo(print());
     }
 
-//    @Test
-//    @DisplayName("return 404 when not able to update favorite item")
-//    void updateItemFavoritesById_recordNotFound() throws Exception{
-//        // test repository
-//        when(itemFavoritesRepository.save(Mockito.any(ItemFavorites.class))).thenReturn(FAVITEM_3);
-//        // build mock endpoint to test endpoint
-//        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.post("/api/items/")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .accept(MediaType.APPLICATION_JSON)
-//                .content(this.mapper.writeValueAsString(FAVITEM_3));
-//        // make/perform mock request
-//        mockMvc.perform(mockRequest)
-//                .andExpect(status().isCreated())
-//                .andExpect(jsonPath("$", notNullValue()))
-//                .andExpect(jsonPath("$.data.id").value(FAVITEM_3.getId()))
-//                .andExpect(jsonPath("$.data.name").value(FAVITEM_3.getName()))
-//                .andExpect(jsonPath("$.data.description").value(FAVITEM_3.getDescription()))
-//                .andExpect(jsonPath("$.data.unit_price").value(FAVITEM_3.getUnit_price()))
-//                .andExpect(jsonPath("$.data.uom").value(FAVITEM_3.getUom()))
-//                .andExpect(jsonPath("$.message").value("success"))
-//                .andDo(print());
-//    }
+    @Test
+    @DisplayName("return 404 when not able to update favorite item")
+    void updateItemFavoritesById_recordNotFound() throws Exception{
+        // create a new favitem
+        ItemFavorites newItemFavorites = new ItemFavorites("New Tubing", "New Long Heavy Tubing", 25.75, "each");
+        // test service
+        when(itemFavoritesService.updateItemFavoritesById(anyLong(), Mockito.any(ItemFavorites.class))).thenReturn(Optional.empty());
+        // build mock request to test endpoint api/items/1/
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.get("/api/items/{itemId}/", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON);
+        // make mock request
+        mockMvc.perform(mockRequest)
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", notNullValue()))
+                .andExpect(jsonPath("$.message").value("cannot find favorite item with id 1"))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("return 200 when able to update favorite item")
+    void updateItemFavoritesById_success() throws Exception{
+        // create new favitems
+        ItemFavorites newItemFavorites = new ItemFavorites("New Tubing", "New Long Heavy Tubing", 25.75, "each");
+        ItemFavorites updatedItemFavorites = new ItemFavorites("Updated New Tubing", "Updated New Long Heavy Tubing", 125.75, "dozen");
+        // test service
+        when(itemFavoritesService.updateItemFavoritesById(anyLong(), Mockito.any(ItemFavorites.class))).thenReturn(Optional.of(updatedItemFavorites));
+        // test endpoint api/items/1/
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
+                        .put("/api/items/{itemId}/", 1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(this.mapper.writeValueAsString(newItemFavorites));
+
+        mockMvc.perform(mockRequest)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", notNullValue()))
+                .andExpect(jsonPath("$.data.id").value(updatedItemFavorites.getId()))
+                .andExpect(jsonPath("$.data.name").value(updatedItemFavorites.getName()))
+                .andExpect(jsonPath("$.data.description").value(updatedItemFavorites.getDescription()))
+                .andExpect(jsonPath("$.data.unit_price").value(updatedItemFavorites.getUnit_price()))
+                .andExpect(jsonPath("$.data.uom").value(updatedItemFavorites.getUom()))
+                .andExpect(jsonPath("$.message").value("item favorite with id 1 has been successfully updated"))
+                .andDo(print());
+    }
 }

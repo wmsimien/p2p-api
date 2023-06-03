@@ -48,6 +48,19 @@ public class ItemFavoritesService {
         return itemFavoritesRepository.save(itemFavoritesObject);
     }
 
+    public Optional<ItemFavorites> updateItemFavoritesById(Long itemId, ItemFavorites itemFavoritesObject) throws InformationNotFoundException {
+        Optional<ItemFavorites> favItem = itemFavoritesRepository.findById(itemId);
+        if (favItem.isPresent()) {
+            favItem.get().setName(itemFavoritesObject.getName());
+            favItem.get().setDescription(itemFavoritesObject.getDescription());
+            favItem.get().setUnit_price(itemFavoritesObject.getUnit_price());
+            favItem.get().setUom(itemFavoritesObject.getUom());
+            itemFavoritesRepository.save(favItem.get());
+            return favItem;
+        } else {
+            throw new InformationNotFoundException("favorite item with id " + itemId + " not found");
+        }
+    }
 
 }
 
