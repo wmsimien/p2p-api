@@ -12,6 +12,7 @@ import java.util.Optional;
 @Service
 public class ItemFavoritesService {
 
+    @Autowired
     private ItemFavoritesRepository itemFavoritesRepository;
     @Autowired
     public void setItemFavoritesRepository(ItemFavoritesRepository itemFavoritesRepository) {
