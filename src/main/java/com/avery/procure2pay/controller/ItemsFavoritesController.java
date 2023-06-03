@@ -2,9 +2,7 @@ package com.avery.procure2pay.controller;
 
 
 import com.avery.procure2pay.exception.InformationNotFoundException;
-import com.avery.procure2pay.model.Employee;
 import com.avery.procure2pay.model.ItemFavorites;
-import com.avery.procure2pay.repository.ItemFavoritesRepository;
 import com.avery.procure2pay.service.ItemFavoritesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,8 +17,6 @@ import java.util.Optional;
 @RequestMapping(path="/api")
 public class ItemsFavoritesController {
 
-    @Autowired
-    ItemFavoritesRepository itemFavoritesRepository;
     @Autowired
     ItemFavoritesService itemFavoritesService;
 
@@ -100,6 +96,23 @@ public class ItemsFavoritesController {
         }
     }
 
+    /**
+     * Method calls service to delete or remove specific favitem
+     * @param itemId Specific id to delete/remove.
+     * @return Response status 404 when specified item id is not found and status of 200 when favitem is deleted successfully.
+     */
+    @DeleteMapping(path="/items/{itemId}/")
+    public ResponseEntity<?> deleteItemFavoritesById(@PathVariable(value="itemId") Long itemId) {
+        Optional<ItemFavorites> favItemToDelete = itemFavoritesService.deleteItemFavorites(itemId);
+        if (favItemToDelete.isEmpty()) {
+            message.put("message", "cannot find favorite item with id " + itemId);
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        } else {
+            message.put("message", "item favorite with id " + itemId + " has been successfully deleted");
+            message.put("data", favItemToDelete.get());
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        }
+    }
 
 }
 

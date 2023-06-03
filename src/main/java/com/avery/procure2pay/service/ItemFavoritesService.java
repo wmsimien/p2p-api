@@ -4,11 +4,7 @@ import com.avery.procure2pay.exception.InformationNotFoundException;
 import com.avery.procure2pay.model.ItemFavorites;
 import com.avery.procure2pay.repository.ItemFavoritesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -48,6 +44,13 @@ public class ItemFavoritesService {
         return itemFavoritesRepository.save(itemFavoritesObject);
     }
 
+    /**
+     * Method updates a specific favorite item with the provided data elements.
+     * @param itemId Specific id of favitem to update.
+     * @param itemFavoritesObject Data elements to update favitem as.
+     * @return Updated favitem
+     * @throws InformationNotFoundException Response message when favitem is not found; thus, no update.
+     */
     public Optional<ItemFavorites> updateItemFavoritesById(Long itemId, ItemFavorites itemFavoritesObject) throws InformationNotFoundException {
         Optional<ItemFavorites> favItem = itemFavoritesRepository.findById(itemId);
         if (favItem.isPresent()) {
@@ -62,6 +65,21 @@ public class ItemFavoritesService {
         }
     }
 
+    /**
+     * Method deletes/removes specific favitem record.
+     * @param itemId Specific id of the favitem.
+     * @return Record of deleted favitem.
+     * @throws InformationNotFoundException Response message when not able to delete or remove favitem.
+     */
+    public Optional<ItemFavorites> deleteItemFavorites(Long itemId) throws InformationNotFoundException {
+        Optional<ItemFavorites> favItem = itemFavoritesRepository.findById(itemId);
+        if (favItem.isPresent()) {
+            itemFavoritesRepository.deleteById(itemId);
+            return favItem;
+        } else {
+            throw new InformationNotFoundException("favorite item with id " + itemId + " not found");
+        }
+    }
 }
 
 

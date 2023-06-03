@@ -1,6 +1,6 @@
 package com.avery.procure2pay.controller;
 
-import com.avery.procure2pay.model.Employee;
+
 import com.avery.procure2pay.model.ItemFavorites;
 import com.avery.procure2pay.repository.ItemFavoritesRepository;
 import com.avery.procure2pay.service.ItemFavoritesService;
@@ -15,8 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,13 +23,12 @@ import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
+
 
 
 @WebMvcTest(ItemsFavoritesController.class)
@@ -42,9 +39,6 @@ class ItemsFavoritesControllerTest {
 
     @Autowired
     ObjectMapper mapper;
-
-    @MockBean
-    private ItemFavoritesRepository itemFavoritesRepository;
 
     @MockBean
     private ItemFavoritesService itemFavoritesService;
@@ -71,12 +65,11 @@ class ItemsFavoritesControllerTest {
                         .andExpect(jsonPath("$.message").value("success"))
                         .andDo(print());
 
-
     }
     @Test
     @DisplayName("should return 200 a specific fav item based itemId")
     void getItemFavoritesById_success() throws Exception {
-        // test repository
+        // test service
         when(itemFavoritesService.getItemFavoritesById(FAVITEM_2.getId())).thenReturn(Optional.of(FAVITEM_2));
         // test endpoint api/items/2/
         mockMvc.perform(MockMvcRequestBuilders
@@ -95,7 +88,7 @@ class ItemsFavoritesControllerTest {
     @Test
     @DisplayName("return 201 when creating a new favorite item successfully")
     void createItemFavorites_success() throws Exception{
-        // test repository
+        // test service
         when(itemFavoritesService.createItemFavorites(Mockito.any(ItemFavorites.class))).thenReturn(FAVITEM_3);
         // build mock endpoint to test endpoint
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.post("/api/items/")
@@ -144,9 +137,10 @@ class ItemsFavoritesControllerTest {
         when(itemFavoritesService.updateItemFavoritesById(anyLong(), Mockito.any(ItemFavorites.class))).thenReturn(Optional.of(updatedItemFavorites));
         // test endpoint api/items/1/
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
-                        .put("/api/items/{itemId}/", 1L)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(this.mapper.writeValueAsString(newItemFavorites));
+                .put("/api/items/{itemId}/", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(this.mapper.writeValueAsString(newItemFavorites));
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
@@ -157,6 +151,44 @@ class ItemsFavoritesControllerTest {
                 .andExpect(jsonPath("$.data.unit_price").value(updatedItemFavorites.getUnit_price()))
                 .andExpect(jsonPath("$.data.uom").value(updatedItemFavorites.getUom()))
                 .andExpect(jsonPath("$.message").value("item favorite with id 1 has been successfully updated"))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("return 404 when not able to delete favitem")
+    void deleteItemFavoritesById_recordNotFound() throws Exception {
+        // test service
+        when(itemFavoritesService.deleteItemFavorites(FAVITEM_2.getId())).thenReturn(Optional.empty());
+        // test endpoint api/items/2/
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.delete("/api/items/{itemId}/", 2L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(mockRequest)
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("cannot find favorite item with id 2"))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("return 200 when able to delete favitem")
+    void deleteItemFavoritesById_success() throws Exception {
+        // test service
+        when(itemFavoritesService.deleteItemFavorites(FAVITEM_3.getId())).thenReturn(Optional.of(FAVITEM_3));
+        // test endpoint api/items/3/
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.delete("/api/items/{itemId}/", 3L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(mockRequest)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", notNullValue()))
+                .andExpect(jsonPath("$.data.id").value(FAVITEM_3.getId()))
+                .andExpect(jsonPath("$.data.name").value(FAVITEM_3.getName()))
+                .andExpect(jsonPath("$.data.description").value(FAVITEM_3.getDescription()))
+                .andExpect(jsonPath("$.data.unit_price").value(FAVITEM_3.getUnit_price()))
+                .andExpect(jsonPath("$.data.uom").value(FAVITEM_3.getUom()))
+                .andExpect(jsonPath("$.message").value("item favorite with id 3 has been successfully deleted"))
                 .andDo(print());
     }
 }
