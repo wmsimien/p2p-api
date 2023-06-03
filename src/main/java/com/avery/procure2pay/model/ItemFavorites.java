@@ -1,6 +1,10 @@
 package com.avery.procure2pay.model;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="itemfavorites")
@@ -22,6 +26,10 @@ public class ItemFavorites {
 
     @Column
     private String uom;
+    // one favorite item can exist on multiple POs
+    @OneToMany(mappedBy = "item", orphanRemoval = true)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<PurchaseOrder> purchaseOrderList;
 
     public ItemFavorites() {
     }
