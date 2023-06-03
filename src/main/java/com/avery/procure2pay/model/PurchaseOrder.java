@@ -3,6 +3,7 @@ package com.avery.procure2pay.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,13 +17,13 @@ public class PurchaseOrder {
     @Column
     private Long reqNo;
     @Column
-    private LocalDateTime reqDate;
+    private LocalDate reqDate;
     @Column
     private Double qty;
     @Column
     private Double price;
     @Column
-    private LocalDateTime deliveryDate;
+    private LocalDate deliveryDate;
     @Column
     private String glAcctNo;
     @Column
@@ -53,7 +54,7 @@ public class PurchaseOrder {
     @Column
     private Long createdBy;
     @Column
-    private LocalDateTime createdDate;
+    private LocalDate createdDate;
 //    @JsonIgnore
 //    @ManyToOne
 //    @JoinColumn(name="employee_id")
@@ -61,13 +62,13 @@ public class PurchaseOrder {
     @Column
     private Long approvedBy;
     @Column
-    private LocalDateTime approvedDate;
+    private LocalDate approvedDate;
 
 
     public PurchaseOrder() {
     }
 
-    public PurchaseOrder(Long id, Long reqNo, LocalDateTime reqDate, Double qty, Double price, LocalDateTime deliveryDate, String glAcctNo, String status, String paymentTerms, String poNotes, String reqNotesInternal, String reqNotesExternal, Long shipTo, ItemFavorites item, Supplier supplier, Long createdBy, LocalDateTime createdDate, Long approvedBy, LocalDateTime approvedDate) {
+    public PurchaseOrder(Long id, Long reqNo, LocalDate reqDate, Double qty, Double price, LocalDate deliveryDate, String glAcctNo, String status, String paymentTerms, String poNotes, String reqNotesInternal, String reqNotesExternal, Long shipTo, ItemFavorites item, Supplier supplier, Long createdBy, LocalDate createdDate, Long approvedBy, LocalDate approvedDate) {
         this.id = id;
         this.reqNo = reqNo;
         this.reqDate = reqDate;
@@ -105,11 +106,11 @@ public class PurchaseOrder {
         this.reqNo = reqNo;
     }
 
-    public LocalDateTime getReqDate() {
+    public LocalDate getReqDate() {
         return reqDate;
     }
 
-    public void setReqDate(LocalDateTime reqDate) {
+    public void setReqDate(LocalDate reqDate) {
         this.reqDate = reqDate;
     }
 
@@ -129,11 +130,11 @@ public class PurchaseOrder {
         this.price = price;
     }
 
-    public LocalDateTime getDeliveryDate() {
+    public LocalDate getDeliveryDate() {
         return deliveryDate;
     }
 
-    public void setDeliveryDate(LocalDateTime deliveryDate) {
+    public void setDeliveryDate(LocalDate deliveryDate) {
         this.deliveryDate = deliveryDate;
     }
 
@@ -217,11 +218,11 @@ public class PurchaseOrder {
         this.createdBy = createdBy;
     }
 
-    public LocalDateTime getCreatedDate() {
+    public LocalDate getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
+    public void setCreatedDate(LocalDate createdDate) {
         this.createdDate = createdDate;
     }
 
@@ -233,11 +234,11 @@ public class PurchaseOrder {
         this.approvedBy = approvedBy;
     }
 
-    public LocalDateTime getApprovedDate() {
+    public LocalDate getApprovedDate() {
         return approvedDate;
     }
 
-    public void setApprovedDate(LocalDateTime approvedDate) {
+    public void setApprovedDate(LocalDate approvedDate) {
         this.approvedDate = approvedDate;
     }
 
