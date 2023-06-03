@@ -1,6 +1,8 @@
 package com.avery.procure2pay.model;
 
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="employees")
@@ -27,6 +29,14 @@ public class Employee {
 
     @Column
     private String gl_acct_no;
+
+//    @OneToMany(mappedBy = "createdBy", orphanRemoval = true)
+//    @LazyCollection(LazyCollectionOption.FALSE)
+//    private List<PurchaseOrder> createdPurchaseOrderList;
+
+//    @OneToMany(mappedBy = "approvedBy", orphanRemoval = true)
+//    @LazyCollection(LazyCollectionOption.FALSE)
+//    private List<PurchaseOrder> approvedPurchaseOrderList;
 
     public Employee() {
     }

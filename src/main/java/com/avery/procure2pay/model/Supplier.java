@@ -1,6 +1,10 @@
 package com.avery.procure2pay.model;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="suppliers")
@@ -43,6 +47,10 @@ public class Supplier {
 
     @Column
     private Boolean status = true;
+
+    @OneToMany(mappedBy = "supplier", orphanRemoval = true)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<PurchaseOrder> purchaseOrderList;
 
     public Supplier() {
     }
