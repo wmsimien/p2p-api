@@ -72,8 +72,8 @@ class SupplierControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.id").value(SUPPLIER_2.getId()))
                 .andExpect(jsonPath("$.data.name").value(SUPPLIER_2.getName()))
-                .andExpect(jsonPath("$.data.contact_name").value(SUPPLIER_2.getContact_name()))
-                .andExpect(jsonPath("$.data.contact_phone").value(SUPPLIER_2.getContact_phone()))
+                .andExpect(jsonPath("$.data.contactName").value(SUPPLIER_2.getContactName()))
+                .andExpect(jsonPath("$.data.contactPhone").value(SUPPLIER_2.getContactPhone()))
                 .andExpect(jsonPath("$.data.address").value(SUPPLIER_2.getAddress()))
                 .andExpect(jsonPath("$.message").value("success"))
                 .andDo(print());
@@ -95,8 +95,8 @@ class SupplierControllerTest {
                 .andExpect(jsonPath("$", notNullValue()))
                 .andExpect(jsonPath("$.data.id").value(SUPPLIER_2.getId()))
                 .andExpect(jsonPath("$.data.name").value(SUPPLIER_2.getName()))
-                .andExpect(jsonPath("$.data.contact_name").value(SUPPLIER_2.getContact_name()))
-                .andExpect(jsonPath("$.data.contact_phone").value(SUPPLIER_2.getContact_phone()))
+                .andExpect(jsonPath("$.data.contactName").value(SUPPLIER_2.getContactName()))
+                .andExpect(jsonPath("$.data.contactPhone").value(SUPPLIER_2.getContactPhone()))
                 .andExpect(jsonPath("$.data.address").value(SUPPLIER_2.getAddress()))
                 .andExpect(jsonPath("$.message").value("success"))
                 .andDo(print());
@@ -137,8 +137,8 @@ class SupplierControllerTest {
                 .andExpect(jsonPath("$", notNullValue()))
                 .andExpect(jsonPath("$.data.id").value(updatedSupplier.getId()))
                 .andExpect(jsonPath("$.data.name").value(updatedSupplier.getName()))
-                .andExpect(jsonPath("$.data.contact_name").value(updatedSupplier.getContact_name()))
-                .andExpect(jsonPath("$.data.contact_phone").value(updatedSupplier.getContact_phone()))
+                .andExpect(jsonPath("$.data.contactName").value(updatedSupplier.getContactName()))
+                .andExpect(jsonPath("$.data.contactPhone").value(updatedSupplier.getContactPhone()))
                 .andExpect(jsonPath("$.data.address").value(updatedSupplier.getAddress()))
                 .andExpect(jsonPath("$.message").value("supplier with id 1 has been successfully updated"))
                 .andDo(print());
@@ -174,8 +174,8 @@ class SupplierControllerTest {
                 .andExpect(jsonPath("$", notNullValue()))
                 .andExpect(jsonPath("$.data.id").value(SUPPLIER_2.getId()))
                 .andExpect(jsonPath("$.data.name").value(SUPPLIER_2.getName()))
-                .andExpect(jsonPath("$.data.contact_name").value(SUPPLIER_2.getContact_name()))
-                .andExpect(jsonPath("$.data.contact_phone").value(SUPPLIER_2.getContact_phone()))
+                .andExpect(jsonPath("$.data.contactName").value(SUPPLIER_2.getContactName()))
+                .andExpect(jsonPath("$.data.contactPhone").value(SUPPLIER_2.getContactPhone()))
                 .andExpect(jsonPath("$.data.address").value(SUPPLIER_2.getAddress()))
                 .andExpect(jsonPath("$.message").value("supplier with id 2 has been successfully deleted"))
                 .andDo(print());

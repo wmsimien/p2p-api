@@ -83,7 +83,7 @@ class SupplierServiceTest {
         Optional<Supplier> updatedSupplier = supplierService.updateSupplierById(1L, supplierObject);
 
         Assertions.assertEquals(updatedSupplier.get().getName(), supplierObject.getName());
-        Assertions.assertEquals(updatedSupplier.get().getContact_name(), supplierObject.getContact_name());
+        Assertions.assertEquals(updatedSupplier.get().getContactName(), supplierObject.getContactName());
     }
 
     @Test

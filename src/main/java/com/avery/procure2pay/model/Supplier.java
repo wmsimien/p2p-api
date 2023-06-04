@@ -19,10 +19,10 @@ public class Supplier {
     private String name;
 
     @Column
-    private String contact_name;
+    private String contactName;
 
     @Column
-    private String contact_phone;
+    private String contactPhone;
 
     @Column
     private String address;
@@ -37,13 +37,13 @@ public class Supplier {
     private String zip;
 
     @Column
-    private String phone_no;
+    private String phoneNo;
 
     @Column
-    private String contact_email;
+    private String contactEmail;
 
     @Column
-    private String payment_method = "COD";
+    private String paymentMethod = "COD";
 
     @Column
     private String status = "Active";
@@ -55,29 +55,29 @@ public class Supplier {
     public Supplier() {
     }
 
-    public Supplier(Long id, String name, String contact_name, String contact_phone, String address, String city, String state, String zip, String phone_no, String contact_email) {
+    public Supplier(Long id, String name, String contactName, String contactPhone, String address, String city, String state, String zip, String phoneNo, String contactEmail) {
         this.id = id;
         this.name = name;
-        this.contact_name = contact_name;
-        this.contact_phone = contact_phone;
+        this.contactName = contactName;
+        this.contactPhone = contactPhone;
         this.address = address;
         this.city = city;
         this.state = state;
         this.zip = zip;
-        this.phone_no = phone_no;
-        this.contact_email = contact_email;
+        this.phoneNo = phoneNo;
+        this.contactEmail = contactEmail;
     }
 
-    public Supplier(String name, String contact_name, String contact_phone, String address, String city, String state, String zip, String phone_no, String contact_email) {
+    public Supplier(String name, String contactName, String contactPhone, String address, String city, String state, String zip, String phoneNo, String contactEmail) {
         this.name = name;
-        this.contact_name = contact_name;
-        this.contact_phone = contact_phone;
+        this.contactName = contactName;
+        this.contactPhone = contactPhone;
         this.address = address;
         this.city = city;
         this.state = state;
         this.zip = zip;
-        this.phone_no = phone_no;
-        this.contact_email = contact_email;
+        this.phoneNo = phoneNo;
+        this.contactEmail = contactEmail;
     }
 
     public Long getId() {
@@ -96,20 +96,20 @@ public class Supplier {
         this.name = name;
     }
 
-    public String getContact_name() {
-        return contact_name;
+    public String getContactName() {
+        return contactName;
     }
 
-    public void setContact_name(String contact_name) {
-        this.contact_name = contact_name;
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
     }
 
-    public String getContact_phone() {
-        return contact_phone;
+    public String getContactPhone() {
+        return contactPhone;
     }
 
-    public void setContact_phone(String contact_phone) {
-        this.contact_phone = contact_phone;
+    public void setContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
     }
 
     public String getAddress() {
@@ -136,24 +136,24 @@ public class Supplier {
         this.zip = zip;
     }
 
-    public String getPhone_no() {
-        return phone_no;
+    public String getPhoneNo() {
+        return phoneNo;
     }
 
-    public void setPhone_no(String phone_no) {
-        this.phone_no = phone_no;
+    public void setPhoneNo(String phoneNo) {
+        this.phoneNo = phoneNo;
     }
 
-    public String getContact_email() {
-        return contact_email;
+    public String getContactEmail() {
+        return contactEmail;
     }
 
-    public void setContact_email(String contact_email) {
-        this.contact_email = contact_email;
+    public void setContactEmail(String contactEmail) {
+        this.contactEmail = contactEmail;
     }
 
-    public String getPayment_method() {
-        return payment_method;
+    public String getPaymentMethod() {
+        return paymentMethod;
     }
 
     public String getStatus() {
@@ -169,15 +169,15 @@ public class Supplier {
         return "Supplier{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", contact_name='" + contact_name + '\'' +
-                ", contact_phone='" + contact_phone + '\'' +
+                ", contact_name='" + contactName + '\'' +
+                ", contact_phone='" + contactPhone + '\'' +
                 ", address='" + address + '\'' +
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
                 ", zip='" + zip + '\'' +
-                ", phone_no='" + phone_no + '\'' +
-                ", contact_email='" + contact_email + '\'' +
-                ", payment_method='" + payment_method + '\'' +
+                ", phone_no='" + phoneNo + '\'' +
+                ", contact_email='" + contactEmail + '\'' +
+                ", payment_method='" + paymentMethod + '\'' +
                 ", status=" + status +
                 '}';
     }
