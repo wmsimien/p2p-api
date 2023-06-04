@@ -41,9 +41,9 @@ class SupplierControllerTest {
 
 
     // create standard suppliers
-    Supplier SUPPLIER_1 = new Supplier(1L, "ZBiotics", "Tim", "Berry", "123-456-7890","Austin","Texas","75600","234-567-8900","tim.berry@gmail.com");
-    Supplier SUPPLIER_2 = new Supplier(2L, "Bright.md", "Joshua", "Landy", "213-546-8790","Austin","Texas","75610","214-657-9800","joshua.landy@gmail.com");
-    Supplier SUPPLIER_3 = new Supplier(3L, "Cirrus Logic", "Susan", "Carrie", "312-654-0957","Austin","Texas","75630","432-675-0870","susan.carrie@gmail.com");
+    Supplier SUPPLIER_1 = new Supplier(1L, "ZBiotics", "Tim Berry", "123-456-7890", "1234 Some Address","Austin","Texas","75600","234-567-8900","tim.berry@gmail.com");
+    Supplier SUPPLIER_2 = new Supplier(2L, "Bright.md", "Joshua Landy", "213-546-8790", "2135 Some Address2","Austin","Texas","75610","214-657-9800","joshua.landy@gmail.com");
+    Supplier SUPPLIER_3 = new Supplier(3L, "Cirrus Logic", "Susan Carrie", "312-654-0957", "3126 Some Address3","Austin","Texas","75630","432-675-0870","susan.carrie@gmail.com");
 
     @Test
     @DisplayName("return 200 when all suppliers are obtain successfully")
