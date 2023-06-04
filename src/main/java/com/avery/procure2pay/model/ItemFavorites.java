@@ -22,7 +22,7 @@ public class ItemFavorites {
     private String description;
 
     @Column
-    private Double unit_price;
+    private Double unitPrice;
 
     @Column
     private String uom;
@@ -34,18 +34,18 @@ public class ItemFavorites {
     public ItemFavorites() {
     }
 
-    public ItemFavorites(Long id, String name, String description, Double unit_price, String uom) {
+    public ItemFavorites(Long id, String name, String description, Double unitPrice, String uom) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.unit_price = unit_price;
+        this.unitPrice = unitPrice;
         this.uom = uom;
     }
 
-    public ItemFavorites(String name, String description, Double unit_price, String uom) {
+    public ItemFavorites(String name, String description, Double unitPrice, String uom) {
         this.name = name;
         this.description = description;
-        this.unit_price = unit_price;
+        this.unitPrice = unitPrice;
         this.uom = uom;
     }
 
@@ -74,12 +74,12 @@ public class ItemFavorites {
         this.description = description;
     }
 
-    public Double getUnit_price() {
-        return unit_price;
+    public Double getUnitPrice() {
+        return unitPrice;
     }
 
-    public void setUnit_price(Double unit_price) {
-        this.unit_price = unit_price;
+    public void setUnitPrice(Double unitPrice) {
+        this.unitPrice = unitPrice;
     }
 
     @Override
@@ -88,7 +88,7 @@ public class ItemFavorites {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", unit_price=" + unit_price +
+                ", unitPrice=" + unitPrice +
                 '}';
     }
 

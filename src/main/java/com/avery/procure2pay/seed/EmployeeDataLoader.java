@@ -31,6 +31,6 @@ public class EmployeeDataLoader implements CommandLineRunner {
             employeeRepository.save(employee2);
             employeeRepository.save(employee3);
         }
-        logger.info("Count of seed employee records from EmployeeDataLoader:  " + employeeRepository.count());
+        logger.info("Count of seeded employee records from EmployeeDataLoader:  " + employeeRepository.count());
     }
 }

@@ -57,7 +57,7 @@ public class ItemFavoritesService {
         if (favItem.isPresent()) {
             favItem.get().setName(itemFavoritesObject.getName());
             favItem.get().setDescription(itemFavoritesObject.getDescription());
-            favItem.get().setUnit_price(itemFavoritesObject.getUnit_price());
+            favItem.get().setUnitPrice(itemFavoritesObject.getUnitPrice());
             favItem.get().setUom(itemFavoritesObject.getUom());
             itemFavoritesRepository.save(favItem.get());
             return favItem;

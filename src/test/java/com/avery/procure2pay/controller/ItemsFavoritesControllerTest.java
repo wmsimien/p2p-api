@@ -79,7 +79,7 @@ class ItemsFavoritesControllerTest {
                 .andExpect(jsonPath("$.data.id").value(FAVITEM_2.getId()))
                 .andExpect(jsonPath("$.data.name").value(FAVITEM_2.getName()))
                 .andExpect(jsonPath("$.data.description").value(FAVITEM_2.getDescription()))
-                .andExpect(jsonPath("$.data.unit_price").value(FAVITEM_2.getUnit_price()))
+                .andExpect(jsonPath("$.data.unitPrice").value(FAVITEM_2.getUnitPrice()))
                 .andExpect(jsonPath("$.data.uom").value(FAVITEM_2.getUom()))
                 .andExpect(jsonPath("$.message").value("success"))
                 .andDo(print());
@@ -102,7 +102,7 @@ class ItemsFavoritesControllerTest {
                 .andExpect(jsonPath("$.data.id").value(FAVITEM_3.getId()))
                 .andExpect(jsonPath("$.data.name").value(FAVITEM_3.getName()))
                 .andExpect(jsonPath("$.data.description").value(FAVITEM_3.getDescription()))
-                .andExpect(jsonPath("$.data.unit_price").value(FAVITEM_3.getUnit_price()))
+                .andExpect(jsonPath("$.data.unitPrice").value(FAVITEM_3.getUnitPrice()))
                 .andExpect(jsonPath("$.data.uom").value(FAVITEM_3.getUom()))
                 .andExpect(jsonPath("$.message").value("success"))
                 .andDo(print());
@@ -148,7 +148,7 @@ class ItemsFavoritesControllerTest {
                 .andExpect(jsonPath("$.data.id").value(updatedItemFavorites.getId()))
                 .andExpect(jsonPath("$.data.name").value(updatedItemFavorites.getName()))
                 .andExpect(jsonPath("$.data.description").value(updatedItemFavorites.getDescription()))
-                .andExpect(jsonPath("$.data.unit_price").value(updatedItemFavorites.getUnit_price()))
+                .andExpect(jsonPath("$.data.unitPrice").value(updatedItemFavorites.getUnitPrice()))
                 .andExpect(jsonPath("$.data.uom").value(updatedItemFavorites.getUom()))
                 .andExpect(jsonPath("$.message").value("item favorite with id 1 has been successfully updated"))
                 .andDo(print());
@@ -186,7 +186,7 @@ class ItemsFavoritesControllerTest {
                 .andExpect(jsonPath("$.data.id").value(FAVITEM_3.getId()))
                 .andExpect(jsonPath("$.data.name").value(FAVITEM_3.getName()))
                 .andExpect(jsonPath("$.data.description").value(FAVITEM_3.getDescription()))
-                .andExpect(jsonPath("$.data.unit_price").value(FAVITEM_3.getUnit_price()))
+                .andExpect(jsonPath("$.data.unitPrice").value(FAVITEM_3.getUnitPrice()))
                 .andExpect(jsonPath("$.data.uom").value(FAVITEM_3.getUom()))
                 .andExpect(jsonPath("$.message").value("item favorite with id 3 has been successfully deleted"))
                 .andDo(print());
