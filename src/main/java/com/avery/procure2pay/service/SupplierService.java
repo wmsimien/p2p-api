@@ -61,13 +61,13 @@ public class SupplierService {
         Optional<Supplier> supplier = supplierRepository.findById(supplierId);
         if (supplier.isPresent()) {
             supplier.get().setName(supplierObject.getName());
-            supplier.get().setContact_name(supplierObject.getContact_name());
-            supplier.get().setContact_phone(supplierObject.getContact_phone());
+            supplier.get().setContactName(supplierObject.getContactName());
+            supplier.get().setContactPhone(supplierObject.getContactPhone());
             supplier.get().setAddress(supplierObject.getAddress());
             supplier.get().setCity(supplierObject.getCity());
             supplier.get().setState(supplierObject.getState());
             supplier.get().setZip(supplierObject.getZip());
-            supplier.get().setPhone_no(supplierObject.getPhone_no());
+            supplier.get().setPhoneNo(supplierObject.getPhoneNo());
             supplierRepository.save(supplier.get());
             return supplier;
         } else {
