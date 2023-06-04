@@ -46,7 +46,7 @@ public class Supplier {
     private String payment_method = "COD";
 
     @Column
-    private Boolean status = true;
+    private String status = "Active";
 
     @OneToMany(mappedBy = "supplier", orphanRemoval = true)
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -156,11 +156,11 @@ public class Supplier {
         return payment_method;
     }
 
-    public Boolean getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
