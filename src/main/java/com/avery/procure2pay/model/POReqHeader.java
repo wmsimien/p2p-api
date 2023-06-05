@@ -19,6 +19,10 @@ public class POReqHeader {
     private Long id;  // po-req no
     @Column
     private Long poNo;  // poNo associated to req
+    // one poReqHeader record to many poReqDetail records
+    @OneToMany(mappedBy = "poReqHeader", orphanRemoval = true)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<POReqDetail> poReqDetailList = new ArrayList<>();
     @Column
     private LocalDate reqDate;
     @Column
