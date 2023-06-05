@@ -6,26 +6,21 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="purchaseOrders")
-public class PurchaseOrder {
+@Table(name="poReqHeaders")
+public class POReqHeader {
 
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id;  // po-req no
     @Column
-    private Long reqNo;  // will replace
+    private Long poNo;  // poNo associated to req
     @Column
     private LocalDate reqDate;
-    @Column
-    private Double qty;
-    @Column
-    private Double price;
     @Column
     private LocalDate deliveryDate;
     @Column
@@ -42,53 +37,29 @@ public class PurchaseOrder {
     private String reqNotesExternal;
     @Column
     private Long shipTo;
-    // multiple POs can have the same favItem
-//    @JsonIgnore
-//    @ManyToOne
-//    @JoinColumn(name="item_id")
-//    private ItemFavorites item;
-    // should be ManyToMany
-    @ManyToMany
-    @JoinTable(
-            name="purchaseOrder_item",
-            joinColumns = @JoinColumn(name = "purchaseOrder_id"),
-            inverseJoinColumns = @JoinColumn(name="itemFavorites_id")
-    )
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<ItemFavorites> items = new ArrayList<>();
+    // only one supplier purchase req
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name="supplier_id")
     private Supplier supplier;
-//    @JsonIgnore
-//    @ManyToOne
-//    @JoinColumn(name="employee_id")
-//    private Employee createdBy;
     @Column
     private Long createdBy;
     @Column
     private LocalDate createdDate;
-//    @JsonIgnore
-//    @ManyToOne
-//    @JoinColumn(name="employee_id")
-//    private Employee approvedBy;
     @Column
     private Long approvedBy;
     @Column
     private LocalDate approvedDate;
 
 
-    public PurchaseOrder() {
+    public POReqHeader() {
     }
 
-    public PurchaseOrder(Long id, Long reqNo, LocalDate reqDate, Double qty, Double price, LocalDate deliveryDate, String glAcctNo, String status, String paymentTerms, String poNotes, String reqNotesInternal, String reqNotesExternal, Long shipTo,
-//                         ItemFavorites item,
-                         Supplier supplier, Long createdBy, LocalDate createdDate, Long approvedBy, LocalDate approvedDate) {
+
+    public POReqHeader(Long id, Long poNo, LocalDate reqDate, LocalDate deliveryDate, String glAcctNo, String status, String paymentTerms, String poNotes, String reqNotesInternal, String reqNotesExternal, Long shipTo, Supplier supplier, Long createdBy, LocalDate createdDate, Long approvedBy, LocalDate approvedDate) {
         this.id = id;
-        this.reqNo = reqNo;
+        this.poNo = poNo;
         this.reqDate = reqDate;
-        this.qty = qty;
-        this.price = price;
         this.deliveryDate = deliveryDate;
         this.glAcctNo = glAcctNo;
         this.status = status;
@@ -97,7 +68,23 @@ public class PurchaseOrder {
         this.reqNotesInternal = reqNotesInternal;
         this.reqNotesExternal = reqNotesExternal;
         this.shipTo = shipTo;
-//        this.item = item;
+        this.supplier = supplier;
+        this.createdBy = createdBy;
+        this.createdDate = createdDate;
+        this.approvedBy = approvedBy;
+        this.approvedDate = approvedDate;
+    }
+
+    public POReqHeader(LocalDate reqDate, LocalDate deliveryDate, String glAcctNo, String status, String paymentTerms, String poNotes, String reqNotesInternal, String reqNotesExternal, Long shipTo, Supplier supplier, Long createdBy, LocalDate createdDate, Long approvedBy, LocalDate approvedDate) {
+        this.reqDate = reqDate;
+        this.deliveryDate = deliveryDate;
+        this.glAcctNo = glAcctNo;
+        this.status = status;
+        this.paymentTerms = paymentTerms;
+        this.poNotes = poNotes;
+        this.reqNotesInternal = reqNotesInternal;
+        this.reqNotesExternal = reqNotesExternal;
+        this.shipTo = shipTo;
         this.supplier = supplier;
         this.createdBy = createdBy;
         this.createdDate = createdDate;
@@ -113,12 +100,12 @@ public class PurchaseOrder {
         this.id = id;
     }
 
-    public Long getReqNo() {
-        return reqNo;
+    public Long getPoNo() {
+        return poNo;
     }
 
-    public void setReqNo(Long reqNo) {
-        this.reqNo = reqNo;
+    public void setPoNo(Long poNo) {
+        this.poNo = poNo;
     }
 
     public LocalDate getReqDate() {
@@ -127,22 +114,6 @@ public class PurchaseOrder {
 
     public void setReqDate(LocalDate reqDate) {
         this.reqDate = reqDate;
-    }
-
-    public Double getQty() {
-        return qty;
-    }
-
-    public void setQty(Double qty) {
-        this.qty = qty;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
     }
 
     public LocalDate getDeliveryDate() {
@@ -209,20 +180,6 @@ public class PurchaseOrder {
         this.shipTo = shipTo;
     }
 
-//    public ItemFavorites getItem() {
-//        return item;
-//    }
-    public List<ItemFavorites> getItems() {
-        return items;
-    }
-
-//    public void setItem(ItemFavorites item) {
-//        this.item = item;
-//    }
-    public void addItem(ItemFavorites itemfav) {
-        items.add(itemfav);
-    }
-
     public Supplier getSupplier() {
         return supplier;
     }
@@ -265,12 +222,10 @@ public class PurchaseOrder {
 
     @Override
     public String toString() {
-        return "PurchaseOrder{" +
+        return "POReqHeader{" +
                 "id=" + id +
-                ", reqNo=" + reqNo +
+                ", poNo=" + poNo +
                 ", reqDate=" + reqDate +
-                ", qty=" + qty +
-                ", price=" + price +
                 ", deliveryDate=" + deliveryDate +
                 ", glAcctNo='" + glAcctNo + '\'' +
                 ", status='" + status + '\'' +
@@ -279,7 +234,6 @@ public class PurchaseOrder {
                 ", reqNotesInternal='" + reqNotesInternal + '\'' +
                 ", reqNotesExternal='" + reqNotesExternal + '\'' +
                 ", shipTo=" + shipTo +
-//                ", item=" + item +
                 ", supplier=" + supplier +
                 ", createdBy=" + createdBy +
                 ", createdDate=" + createdDate +

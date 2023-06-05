@@ -50,7 +50,7 @@ public class Supplier {
 
     @OneToMany(mappedBy = "supplier", orphanRemoval = true)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<PurchaseOrder> purchaseOrderList;
+    private List<POReqHeader> poReqHeaderList;
 
     public Supplier() {
     }

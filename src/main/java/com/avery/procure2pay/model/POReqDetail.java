@@ -6,20 +6,19 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="purchaseOrders")
-public class PurchaseOrder {
+@Table(name="poReqDetails")
+public class POReqDetail {
 
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
-    private Long reqNo;  // will replace
+    private Long poNo;
     @Column
     private LocalDate reqDate;
     @Column
@@ -78,12 +77,12 @@ public class PurchaseOrder {
     private LocalDate approvedDate;
 
 
-    public PurchaseOrder() {
+    public POReqDetail() {
     }
 
-    public PurchaseOrder(Long id, Long reqNo, LocalDate reqDate, Double qty, Double price, LocalDate deliveryDate, String glAcctNo, String status, String paymentTerms, String poNotes, String reqNotesInternal, String reqNotesExternal, Long shipTo,
+    public POReqDetail(Long id, Long reqNo, LocalDate reqDate, Double qty, Double price, LocalDate deliveryDate, String glAcctNo, String status, String paymentTerms, String poNotes, String reqNotesInternal, String reqNotesExternal, Long shipTo,
 //                         ItemFavorites item,
-                         Supplier supplier, Long createdBy, LocalDate createdDate, Long approvedBy, LocalDate approvedDate) {
+                       Supplier supplier, Long createdBy, LocalDate createdDate, Long approvedBy, LocalDate approvedDate) {
         this.id = id;
         this.reqNo = reqNo;
         this.reqDate = reqDate;
