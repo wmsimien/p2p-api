@@ -39,6 +39,19 @@ public class PurchaseOrderController {
         }
     }
 
+    @GetMapping(path="/purchase-orders/reqs/")
+    public ResponseEntity<?> getAllPurchaseReqs() {
+        List<PurchaseOrder> purchaseOrderReqsList = purchaseOrderService.getAllPurchaseReqs();
+        if (purchaseOrderReqsList.isEmpty()) {
+            message.put("message", "cannot find any purchase order requisitions");
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        } else {
+            message.put("message", "success");
+            message.put("data", purchaseOrderReqsList);
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        }
+    }
+
     /**
      * Endpoint calls method to obtain purchase order based on the specific id.
      * @param purchaseOrderId Specific if of the purchase order to obtain.

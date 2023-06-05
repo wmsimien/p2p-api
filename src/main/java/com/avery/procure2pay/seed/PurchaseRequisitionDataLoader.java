@@ -52,11 +52,15 @@ public class PurchaseRequisitionDataLoader implements CommandLineRunner {
             PO_1.setCreatedDate(LocalDate.parse("2023-06-04"));
             purchaseOrderRepository.save(PO_1);
             logger.info("PO1" + PO_1);
+            logger.info("PO1 - items " + PO_1.getItems());
             PurchaseOrder PO_2 = new PurchaseOrder();
             PO_2.setReqDate(LocalDate.parse("2023-06-04"));
 //            PO_2.setItem(FAVITEM_2);
+            PO_2.addItem(FAVITEM_2);
+            PO_2.addItem(FAVITEM_1);
             PO_2.setQty(22.0);
             PO_2.setPrice(FAVITEM_2.getUnitPrice());
+            logger.info("PO2 - items " + PO_2.getItems());
 //            PO_2.setSupplier(SUPPLIER_2);
             PO_2.setPaymentTerms(SUPPLIER_2.getPaymentMethod());
             PO_2.setShipTo(2L);
@@ -69,6 +73,8 @@ public class PurchaseRequisitionDataLoader implements CommandLineRunner {
             PurchaseOrder PO_3 = new PurchaseOrder();
             PO_3.setReqDate(LocalDate.parse("2023-06-04"));
 //            PO_3.setItem(FAVITEM_3);
+            PO_3.addItem(FAVITEM_3);
+            logger.info("PO3 - items " + PO_3.getItems());
             PO_3.setQty(33.0);
             PO_3.setPrice(FAVITEM_3.getUnitPrice());
 //            PO_3.setSupplier(SUPPLIER_3);

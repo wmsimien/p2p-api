@@ -31,6 +31,11 @@ public class PurchaseOrderService {
     public List<PurchaseOrder> getAllPurchaseOrders() {
         return purchaseOrderRepository.findAll();
     }
+    public List<PurchaseOrder> getAllPurchaseReqs() {
+       List<PurchaseOrder> poList = purchaseOrderRepository.findAll();
+       poList.stream().filter(rec -> rec.getReqNo() != null);
+       return poList;
+    }
 
     /**
      * Method obtains purchase order by id.
