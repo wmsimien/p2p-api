@@ -4,6 +4,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,9 +28,9 @@ public class ItemFavorites {
     @Column
     private String uom;
     // one favorite item can exist on multiple POs
-    @OneToMany(mappedBy = "item", orphanRemoval = true)
+    @ManyToMany(mappedBy = "items")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<PurchaseOrder> purchaseOrderList;
+    private List<PurchaseOrder> purchaseOrderLists = new ArrayList<>();
 
     public ItemFavorites() {
     }

@@ -1,7 +1,9 @@
 package com.avery.procure2pay.service;
 
 import com.avery.procure2pay.exception.InformationNotFoundException;
+import com.avery.procure2pay.model.ItemFavorites;
 import com.avery.procure2pay.model.PurchaseOrder;
+import com.avery.procure2pay.repository.ItemFavoritesRepository;
 import com.avery.procure2pay.repository.PurchaseOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ public class PurchaseOrderService {
 
     @Autowired
     PurchaseOrderRepository purchaseOrderRepository;
+    @Autowired
+    ItemFavoritesRepository itemFavoritesRepository;
 
     @Autowired
     public void setPurchaseOrderRepository(PurchaseOrderRepository purchaseOrderRepository) {
@@ -26,6 +30,11 @@ public class PurchaseOrderService {
      */
     public List<PurchaseOrder> getAllPurchaseOrders() {
         return purchaseOrderRepository.findAll();
+    }
+    public List<PurchaseOrder> getAllPurchaseReqs() {
+       List<PurchaseOrder> poList = purchaseOrderRepository.findAll();
+       poList.stream().filter(rec -> rec.getReqNo() != null);
+       return poList;
     }
 
     /**
@@ -46,6 +55,21 @@ public class PurchaseOrderService {
         return purchaseOrderRepository.save(purchaseOrderObject);
     }
 
+    public PurchaseOrder addItemToPurchaseOrder(Long purchaseOrderId, ItemFavorites itemFavorites) {
+        PurchaseOrder purchaseOrder = purchaseOrderRepository.findById(purchaseOrderId).get();
+        if (purchaseOrder != null) {
+            Optional<ItemFavorites> founditemFav = itemFavoritesRepository.findById(itemFavorites.getId());
+            if (founditemFav.isPresent()) {
+                purchaseOrder.getItems().add(founditemFav.get());
+            }
+        } else {
+            {
+                throw new InformationNotFoundException("purchase order with id " + purchaseOrderId + " not found");
+            }
+        }
+        return purchaseOrderRepository.save(purchaseOrder);
+    }
+
     /**
      * Method updates the specified purchase order with the data elements provided.
      * @param purchaseOrderId Specified purchase order id to modify.
@@ -56,7 +80,9 @@ public class PurchaseOrderService {
     public Optional<PurchaseOrder> updatePurchaseOrderById(Long purchaseOrderId, PurchaseOrder purchaseOrderObject) throws InformationNotFoundException {
         Optional<PurchaseOrder> purchaseOrder = purchaseOrderRepository.findById(purchaseOrderId);
         if (purchaseOrder.isPresent()) {
-            purchaseOrder.get().setItem(purchaseOrderObject.getItem());
+//            purchaseOrder.get().setItem(purchaseOrderObject.getItem());
+//            ItemFavorites itemFavorites = itemFavoritesRepository.
+
             purchaseOrder.get().setApprovedBy(purchaseOrderObject.getApprovedBy());
             purchaseOrder.get().setApprovedDate(purchaseOrderObject.getApprovedDate());
             purchaseOrder.get().setDeliveryDate(purchaseOrderObject.getDeliveryDate());

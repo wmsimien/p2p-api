@@ -1,10 +1,14 @@
 package com.avery.procure2pay.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="purchaseOrders")
@@ -39,10 +43,19 @@ public class PurchaseOrder {
     @Column
     private Long shipTo;
     // multiple POs can have the same favItem
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name="item_id")
-    private ItemFavorites item;
+//    @JsonIgnore
+//    @ManyToOne
+//    @JoinColumn(name="item_id")
+//    private ItemFavorites item;
+    // should be ManyToMany
+    @ManyToMany
+    @JoinTable(
+            name="purchaseOrder_item",
+            joinColumns = @JoinColumn(name = "purchaseOrder_id"),
+            inverseJoinColumns = @JoinColumn(name="itemFavorites_id")
+    )
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<ItemFavorites> items = new ArrayList<>();
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name="supplier_id")
@@ -68,7 +81,9 @@ public class PurchaseOrder {
     public PurchaseOrder() {
     }
 
-    public PurchaseOrder(Long id, Long reqNo, LocalDate reqDate, Double qty, Double price, LocalDate deliveryDate, String glAcctNo, String status, String paymentTerms, String poNotes, String reqNotesInternal, String reqNotesExternal, Long shipTo, ItemFavorites item, Supplier supplier, Long createdBy, LocalDate createdDate, Long approvedBy, LocalDate approvedDate) {
+    public PurchaseOrder(Long id, Long reqNo, LocalDate reqDate, Double qty, Double price, LocalDate deliveryDate, String glAcctNo, String status, String paymentTerms, String poNotes, String reqNotesInternal, String reqNotesExternal, Long shipTo,
+//                         ItemFavorites item,
+                         Supplier supplier, Long createdBy, LocalDate createdDate, Long approvedBy, LocalDate approvedDate) {
         this.id = id;
         this.reqNo = reqNo;
         this.reqDate = reqDate;
@@ -82,7 +97,7 @@ public class PurchaseOrder {
         this.reqNotesInternal = reqNotesInternal;
         this.reqNotesExternal = reqNotesExternal;
         this.shipTo = shipTo;
-        this.item = item;
+//        this.item = item;
         this.supplier = supplier;
         this.createdBy = createdBy;
         this.createdDate = createdDate;
@@ -194,12 +209,18 @@ public class PurchaseOrder {
         this.shipTo = shipTo;
     }
 
-    public ItemFavorites getItem() {
-        return item;
+//    public ItemFavorites getItem() {
+//        return item;
+//    }
+    public List<ItemFavorites> getItems() {
+        return items;
     }
 
-    public void setItem(ItemFavorites item) {
-        this.item = item;
+//    public void setItem(ItemFavorites item) {
+//        this.item = item;
+//    }
+    public void addItem(ItemFavorites itemfav) {
+        items.add(itemfav);
     }
 
     public Supplier getSupplier() {
@@ -258,7 +279,7 @@ public class PurchaseOrder {
                 ", reqNotesInternal='" + reqNotesInternal + '\'' +
                 ", reqNotesExternal='" + reqNotesExternal + '\'' +
                 ", shipTo=" + shipTo +
-                ", item=" + item +
+//                ", item=" + item +
                 ", supplier=" + supplier +
                 ", createdBy=" + createdBy +
                 ", createdDate=" + createdDate +
