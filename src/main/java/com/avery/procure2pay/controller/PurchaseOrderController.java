@@ -1,6 +1,7 @@
 package com.avery.procure2pay.controller;
 
 import com.avery.procure2pay.exception.InformationNotFoundException;
+import com.avery.procure2pay.model.ItemFavorites;
 import com.avery.procure2pay.model.PurchaseOrder;
 import com.avery.procure2pay.service.PurchaseOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +92,19 @@ public class PurchaseOrderController {
             message.put("message", "purchase order with id " + purchaseOrderId + " has been successfully updated");
             message.put("data", purchaseOrderToUpdate.get());
             return new ResponseEntity<>(message, HttpStatus.OK);
+        }
+    }
+
+    @PutMapping(path="/purchase-orders/{purchaseOrderId}/items")
+    public ResponseEntity<?> addItemToPurchaseOrder(@PathVariable(value="purchaseOrderId") Long purchaseOrderId, @RequestBody ItemFavorites itemFav) throws InformationNotFoundException {
+        PurchaseOrder purchaseOrderToUpdate = purchaseOrderService.addItemToPurchaseOrder(purchaseOrderId, itemFav);
+        if (purchaseOrderToUpdate != null) {
+            message.put("message", "purchase order with id " + purchaseOrderId + " has been successfully updated");
+            message.put("data", purchaseOrderToUpdate);
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else {
+            message.put("message", "cannot find purchase order with id " + purchaseOrderId);
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         }
     }
 }

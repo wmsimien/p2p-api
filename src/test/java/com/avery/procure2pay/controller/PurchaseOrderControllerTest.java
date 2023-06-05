@@ -2,6 +2,7 @@ package com.avery.procure2pay.controller;
 
 import com.avery.procure2pay.model.ItemFavorites;
 import com.avery.procure2pay.model.PurchaseOrder;
+import com.avery.procure2pay.model.Supplier;
 import com.avery.procure2pay.service.PurchaseOrderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -49,17 +50,25 @@ class PurchaseOrderControllerTest {
     ItemFavorites FAVITEM_1 = new ItemFavorites(1L, "Tubing", "Long Heavy Tubing", 25.75, "each");
     ItemFavorites FAVITEM_2 = new ItemFavorites(2L, "Small Tubing", "Small Lite Tubing", 15.75, "pounds");
     ItemFavorites FAVITEM_3 = new ItemFavorites(3L, "XSmall Tubing", "Xtra-Small Heavy Tubing", 5.75, "skids");
+    Supplier SUPPLIER_1 = new Supplier(1L, "ZBiotics", "Tim Berry", "123-456-7890", "1234 Some Address","Austin","Texas","75600","234-567-8900","tim.berry@gmail.com");
+    Supplier SUPPLIER_2 = new Supplier(2L, "Bright.md", "Joshua Landy", "213-546-8790", "2135 Some Address2","Austin","Texas","75610","214-657-9800","joshua.landy@gmail.com");
+    Supplier SUPPLIER_3 = new Supplier(3L, "Cirrus Logic", "Susan Carrie", "312-654-0957", "3126 Some Address3","Austin","Texas","75630","432-675-0870","susan.carrie@gmail.com");
 
     @Test
     @DisplayName("get all purchase order success")
     void getAllPurchaseOrders_success() throws Exception {
         PO_1.setId(1L);
-        PO_1.setItem(FAVITEM_1);
+//        PO_1.setItem(FAVITEM_1);
+        PO_1.addItem(FAVITEM_1);
         PO_1.setQty(2.0);
+        PO_1.setSupplier(SUPPLIER_1);
+        PO_1.setPaymentTerms(SUPPLIER_1.getPaymentMethod());
         PO_1.setCreatedDate(LocalDate.parse("2023-06-01"));
         PO_2.setId(2L);
-        PO_2.setItem(FAVITEM_2);
+//        PO_2.setItem(FAVITEM_2);
+        PO_2.addItem(FAVITEM_2);
         PO_2.setQty(2.0);
+        PO_2.setSupplier(SUPPLIER_2);
         PO_2.setCreatedDate(LocalDate.parse("2023-06-02"));
         List<PurchaseOrder> purchaseOrderList = new ArrayList<>(Arrays.asList(PO_1, PO_2));
         when(purchaseOrderService.getAllPurchaseOrders()).thenReturn(purchaseOrderList);
@@ -76,8 +85,11 @@ class PurchaseOrderControllerTest {
     @DisplayName("get purchase order by id success")
     void getPurchaseOrderById_success() throws Exception {
         PO_1.setId(1L);
-        PO_1.setItem(FAVITEM_1);
+//        PO_1.setItem(FAVITEM_1);
+        PO_1.addItem(FAVITEM_1);
         PO_1.setQty(2.0);
+        PO_1.setSupplier(SUPPLIER_1);
+        PO_1.setPaymentTerms(SUPPLIER_1.getPaymentMethod());
         PO_1.setCreatedDate(LocalDate.parse("2023-06-01"));
 
         when(purchaseOrderService.getPurchaseOrdersById(PO_1.getId())).thenReturn(Optional.of(PO_1));
@@ -94,7 +106,8 @@ class PurchaseOrderControllerTest {
     @DisplayName("return 201 when a purchase order is successfully created")
     void createPurchaseOrder_success() throws Exception {
         PO_1.setId(1L);
-        PO_1.setItem(FAVITEM_1);
+//        PO_1.setItem(FAVITEM_1);
+        PO_1.addItem(FAVITEM_1);
         PO_1.setQty(2.0);
         PO_1.setCreatedDate(LocalDate.parse("2023-06-01"));
 
@@ -117,7 +130,8 @@ class PurchaseOrderControllerTest {
     @DisplayName("return 404 when purchase order by id is not a success")
     void updatePurchaseOrderById_recordNotFount() throws Exception {
         PO_1.setId(1L);
-        PO_1.setItem(FAVITEM_1);
+//        PO_1.setItem(FAVITEM_1);
+        PO_1.addItem(FAVITEM_1);
         PO_1.setQty(2.0);
         PO_1.setCreatedDate(LocalDate.parse("2023-06-01"));
 
@@ -138,12 +152,14 @@ class PurchaseOrderControllerTest {
     @DisplayName("return 200 when purchase order by id is success")
     void updatePurchaseOrderById_success() throws Exception {
         PO_1.setId(1L);
-        PO_1.setItem(FAVITEM_1);
+//        PO_1.setItem(FAVITEM_1);
+        PO_1.addItem(FAVITEM_1);
         PO_1.setQty(2.0);
         PO_1.setCreatedDate(LocalDate.parse("2023-06-01"));
 
         PO_2.setId(2L);
-        PO_2.setItem(FAVITEM_2);
+//        PO_2.setItem(FAVITEM_2);
+        PO_2.addItem(FAVITEM_2);
         PO_2.setQty(2.0);
         PO_2.setCreatedDate(LocalDate.parse("2023-06-02"));
 
@@ -161,6 +177,4 @@ class PurchaseOrderControllerTest {
                 .andExpect(jsonPath("$.message").value("purchase order with id 1 has been successfully updated"))
                 .andDo(print());
     }
-
-
 }

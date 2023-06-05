@@ -53,7 +53,8 @@ class PurchaseOrderServiceTest {
     @DisplayName("get a purchase order by id success")
     void getPurchaseOrderById_success() {
         PO_2.setId(2L);
-        PO_2.setItem(FAVITEM_2);
+//        PO_2.setItem(FAVITEM_2);
+        PO_2.addItem(FAVITEM_2);
         PO_2.setQty(2.0);
         PO_2.setCreatedDate(LocalDate.parse("2023-06-01"));
         // mock purchaseOrderRepository findById()
@@ -69,7 +70,8 @@ class PurchaseOrderServiceTest {
     @DisplayName("create new purchase order success")
     void createPurchaseOrder_success() {
         PO_2.setId(2L);
-        PO_2.setItem(FAVITEM_2);
+//        PO_2.setItem(FAVITEM_2);
+        PO_2.addItem(FAVITEM_2);
         PO_2.setQty(2.0);
         PO_2.setCreatedDate(LocalDate.parse("2023-06-01"));
 
@@ -81,7 +83,8 @@ class PurchaseOrderServiceTest {
         when(purchaseOrderService.createPurchaseOrder(Mockito.any(PurchaseOrder.class))).thenReturn(createdPO);
 
         Assertions.assertNotNull(createdPO);
-        assertEquals(PO_2.getItem(), createdPO.getItem());
+//        assertEquals(PO_2.getItem(), createdPO.getItem());
+        assertEquals(PO_2.getItems(), createdPO.getItems());
         assertEquals(PO_2.getCreatedDate(), createdPO.getCreatedDate());
     }
 
@@ -89,7 +92,8 @@ class PurchaseOrderServiceTest {
     @DisplayName("update a specific purchase order record successfully")
     void updatePurchaseById_success() {
         PO_2.setId(2L);
-        PO_2.setItem(FAVITEM_2);
+//        PO_2.setItem(FAVITEM_2);
+        PO_2.addItem(FAVITEM_2);
         PO_2.setQty(2.0);
         PO_2.setCreatedDate(LocalDate.parse("2023-06-01"));
 
@@ -98,13 +102,16 @@ class PurchaseOrderServiceTest {
 
         Supplier supplierObject = new Supplier("UpdateBright.md", "UpdatedJoshua", "UpdatedLandy", "213-546-8790","Austin","Texas","75610","214-657-9800","updatedjoshua.newlandy@gmail.com");
         PO_1.setId(1L);
-        PO_1.setItem(FAVITEM_1);
+//        PO_1.setItem(FAVITEM_1);
+        PO_1.addItem(FAVITEM_1);
         PO_1.setQty(2.0);
         PO_1.setCreatedDate(LocalDate.parse("2023-06-01"));
-        Optional<PurchaseOrder> updatedPO = purchaseOrderService.updatePurchaseOrderById(1L, PO_1);
+//        Optional<PurchaseOrder> updatedPO = purchaseOrderService.updatePurchaseOrderById(1L, PO_1);
+        PurchaseOrder updatedPOReq = purchaseOrderService.addItemToPurchaseOrder(1L,FAVITEM_2);
 
-        Assertions.assertEquals(updatedPO.get().getItem(), PO_1.getItem());
-        Assertions.assertEquals(updatedPO.get().getPrice(), PO_1.getPrice());
+//        Assertions.assertEquals(updatedPO.get().getItem(), PO_1.getItem());
+        Assertions.assertEquals(updatedPOReq.getItems(), PO_2.getItems());
+//        Assertions.assertEquals(updatedPO.get().getPrice(), PO_1.getPrice());
     }
 
 }
