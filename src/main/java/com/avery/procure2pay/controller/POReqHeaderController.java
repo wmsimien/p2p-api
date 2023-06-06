@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -93,7 +94,7 @@ public class POReqHeaderController{
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         } else {
             poReqToUpdate.get().setReqDate(poReqHeader.getReqDate());
-            poReqToUpdate.get().setSupplier(poReqHeader.getSupplier());
+            poReqToUpdate.get().setSupplierLists(poReqHeader.getSupplierLists());
             poReqToUpdate.get().setApprovedBy(poReqHeader.getApprovedBy());
             poReqToUpdate.get().setApprovedDate(poReqHeader.getApprovedDate());
             poReqToUpdate.get().setCreatedDate(poReqHeader.getCreatedDate());
@@ -104,7 +105,6 @@ public class POReqHeaderController{
             poReqToUpdate.get().setStatus(poReqHeader.getStatus());
             poReqToUpdate.get().setPaymentTerms(poReqHeader.getPaymentTerms());
             poReqToUpdate.get().setShipTo(poReqHeader.getShipTo());
-            poReqToUpdate.get().setSupplier(poReqHeader.getSupplier());
             poReqToUpdate.get().setPoNotes(poReqHeader.getPoNotes());
             poReqToUpdate.get().setGlAcctNo(poReqHeader.getGlAcctNo());
             poReqHeaderRepository.save(poReqToUpdate.get());

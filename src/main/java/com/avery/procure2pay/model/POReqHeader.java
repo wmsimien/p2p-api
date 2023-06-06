@@ -47,10 +47,11 @@ public class POReqHeader {
     @Column
     private Long shipTo;
     // only one supplier purchase req
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name="supplier_id")
-    private Supplier supplier;
+//    @JsonIgnore
+//    @ManyToOne
+//    @JoinColumn(name="supplier_id")
+    @OneToMany(mappedBy = "poReqHeader")
+    private List<Supplier> supplierLists = new ArrayList<>();
     @Column
     private Long createdBy;
     @Column
@@ -63,11 +64,10 @@ public class POReqHeader {
 
     public POReqHeader() {
     }
-
-
-    public POReqHeader(Long id, Long poNo, LocalDate reqDate, LocalDate deliveryDate, String glAcctNo, String status, String paymentTerms, String poNotes, String reqNotesInternal, String reqNotesExternal, Long shipTo, Supplier supplier, Long createdBy, LocalDate createdDate, Long approvedBy, LocalDate approvedDate) {
+    public POReqHeader(Long id, Long poNo, List<POReqDetail> poReqDetailList, LocalDate reqDate, LocalDate deliveryDate, String glAcctNo, String status, String paymentTerms, String poNotes, String reqNotesInternal, String reqNotesExternal, Long shipTo, List<Supplier> supplierLists, Long createdBy, LocalDate createdDate, Long approvedBy, LocalDate approvedDate) {
         this.id = id;
         this.poNo = poNo;
+        this.poReqDetailList = poReqDetailList;
         this.reqDate = reqDate;
         this.deliveryDate = deliveryDate;
         this.glAcctNo = glAcctNo;
@@ -77,14 +77,15 @@ public class POReqHeader {
         this.reqNotesInternal = reqNotesInternal;
         this.reqNotesExternal = reqNotesExternal;
         this.shipTo = shipTo;
-        this.supplier = supplier;
+        this.supplierLists = supplierLists;
         this.createdBy = createdBy;
         this.createdDate = createdDate;
         this.approvedBy = approvedBy;
         this.approvedDate = approvedDate;
     }
 
-    public POReqHeader(LocalDate reqDate, LocalDate deliveryDate, String glAcctNo, String status, String paymentTerms, String poNotes, String reqNotesInternal, String reqNotesExternal, Long shipTo, Supplier supplier, Long createdBy, LocalDate createdDate, Long approvedBy, LocalDate approvedDate) {
+    public POReqHeader(List<POReqDetail> poReqDetailList, LocalDate reqDate, LocalDate deliveryDate, String glAcctNo, String status, String paymentTerms, String poNotes, String reqNotesInternal, String reqNotesExternal, Long shipTo, List<Supplier> supplierLists, Long createdBy, LocalDate createdDate, Long approvedBy, LocalDate approvedDate) {
+        this.poReqDetailList = poReqDetailList;
         this.reqDate = reqDate;
         this.deliveryDate = deliveryDate;
         this.glAcctNo = glAcctNo;
@@ -94,7 +95,7 @@ public class POReqHeader {
         this.reqNotesInternal = reqNotesInternal;
         this.reqNotesExternal = reqNotesExternal;
         this.shipTo = shipTo;
-        this.supplier = supplier;
+        this.supplierLists = supplierLists;
         this.createdBy = createdBy;
         this.createdDate = createdDate;
         this.approvedBy = approvedBy;
@@ -115,6 +116,14 @@ public class POReqHeader {
 
     public void setPoNo(Long poNo) {
         this.poNo = poNo;
+    }
+
+    public List<POReqDetail> getPoReqDetailList() {
+        return poReqDetailList;
+    }
+
+    public void setPoReqDetailList(List<POReqDetail> poReqDetailList) {
+        this.poReqDetailList = poReqDetailList;
     }
 
     public LocalDate getReqDate() {
@@ -189,12 +198,12 @@ public class POReqHeader {
         this.shipTo = shipTo;
     }
 
-    public Supplier getSupplier() {
-        return supplier;
+    public List<Supplier> getSupplierLists() {
+        return supplierLists;
     }
 
-    public void setSupplier(Supplier supplier) {
-        this.supplier = supplier;
+    public void setSupplierLists(List<Supplier> supplierLists) {
+        this.supplierLists = supplierLists;
     }
 
     public Long getCreatedBy() {
@@ -238,6 +247,7 @@ public class POReqHeader {
         return "POReqHeader{" +
                 "id=" + id +
                 ", poNo=" + poNo +
+                ", poReqDetailList=" + poReqDetailList +
                 ", reqDate=" + reqDate +
                 ", deliveryDate=" + deliveryDate +
                 ", glAcctNo='" + glAcctNo + '\'' +
@@ -247,7 +257,7 @@ public class POReqHeader {
                 ", reqNotesInternal='" + reqNotesInternal + '\'' +
                 ", reqNotesExternal='" + reqNotesExternal + '\'' +
                 ", shipTo=" + shipTo +
-                ", supplier=" + supplier +
+                ", supplierLists=" + supplierLists +
                 ", createdBy=" + createdBy +
                 ", createdDate=" + createdDate +
                 ", approvedBy=" + approvedBy +
