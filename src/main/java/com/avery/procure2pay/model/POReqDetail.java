@@ -37,8 +37,20 @@ public class POReqDetail {
 
 
 
-
     public POReqDetail() {
+    }
+
+    public POReqDetail(Long id, Double qty, Double price, List<ItemFavorites> items) {
+        this.id = id;
+        this.qty = qty;
+        this.price = price;
+        this.items = items;
+    }
+
+    public POReqDetail(Double qty, Double price, List<ItemFavorites> items) {
+        this.qty = qty;
+        this.price = price;
+        this.items = items;
     }
 
 
