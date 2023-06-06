@@ -37,7 +37,7 @@ public class POReqHeader {
     @Column
     private String status = "Open";
     @Column
-    private String paymentTerms;
+    private String paymentTerms = "COD";
     @Column
     private String poNotes;
     @Column

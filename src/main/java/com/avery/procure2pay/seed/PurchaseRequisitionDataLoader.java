@@ -44,11 +44,15 @@ public class PurchaseRequisitionDataLoader implements CommandLineRunner {
             Supplier SUPPLIER_2 = new Supplier(2L, "Bright.md", "Joshua Landy", "213-546-8790", "2135 Some Address2","Austin","Texas","75610","214-657-9800","joshua.landy@gmail.com");
             Supplier SUPPLIER_3 = new Supplier(3L, "Cirrus Logic", "Susan Carrie", "312-654-0957", "3126 Some Address3","Austin","Texas","75630","432-675-0870","susan.carrie@gmail.com");
             List<ItemFavorites> itemsList = new ArrayList<>();//Arrays.asList(FAVITEM_1); //, FAVITEM_2, FAVITEM_3);
+            List<ItemFavorites> itemsList2 = new ArrayList<>();
+            List<ItemFavorites> itemsList3 = new ArrayList<>();
 
+
+
+            // PO REQ #1
             POReqHeader reqHeader = new POReqHeader();
             POReqDetail reqDetail = new POReqDetail();
             reqHeader.setReqDate(LocalDate.parse("2023-06-04"));
-//            reqHeader.setSupplier(SUPPLIER_1);
             reqHeader.setApprovedBy(null);
             reqHeader.setApprovedDate(null);
             reqHeader.setCreatedDate(LocalDate.parse("2023-06-04"));
@@ -56,29 +60,86 @@ public class PurchaseRequisitionDataLoader implements CommandLineRunner {
             reqHeader.setDeliveryDate(LocalDate.parse("2023-06-13"));
             reqHeader.setReqNotesExternal("external req note");
             reqHeader.setReqNotesInternal("internal req note");
-//            reqHeader.setStatus();
-//            reqHeader.setPaymentTerms();
             reqHeader.setShipTo(employee2.getId());
-//            reqHeader.setSupplier();
+            reqHeader.setSupplierLists(Arrays.asList(SUPPLIER_1)); // not setting
             reqHeader.setPoNotes("po notes");
             reqHeader.setGlAcctNo(null);
-//            poReqHeaderRepository.save(reqHeader);
 
             List<POReqHeader> poReqHeaders = new ArrayList<>();
-//            poReqHeaders.add(reqHeader);
-
             itemsList = new ArrayList<>(Arrays.asList(FAVITEM_1));
             reqDetail.setItems(itemsList);
             reqDetail.setQty(2.0);
             reqDetail.setPrice(45.60);
-
+//            itemsList.add(FAVITEM_2);
+//            reqDetail.setItems(itemsList);
+//            reqDetail.setQty(22.0);
+//            reqDetail.setPrice(55.60);
             reqHeader.addPOReqDetail(reqDetail);
             poReqHeaders.add(reqHeader);
             poReqDetailRepository.save(reqDetail);  // must save first
             poReqHeaderRepository.save(reqHeader);
-//            poReqDetailRepository.save(reqDetail);
-            logger.info("reqHeader" + reqHeader);
-            logger.info("reqDetail" + reqDetail);
+
+            // PO REQ #2
+            POReqHeader reqHeader2 = new POReqHeader();
+            POReqDetail reqDetail2 = new POReqDetail();
+
+            reqHeader2.setReqDate(LocalDate.parse("2023-06-05"));
+            reqHeader2.setApprovedBy(null);
+            reqHeader2.setApprovedDate(null);
+            reqHeader2.setCreatedDate(LocalDate.parse("2023-06-05"));
+            reqHeader2.setCreatedBy(employee1.getId());
+            reqHeader2.setDeliveryDate(LocalDate.parse("2023-06-17"));
+            reqHeader2.setReqNotesExternal("external req note for #2");
+            reqHeader2.setReqNotesInternal("internal req note for #2");
+            reqHeader2.setShipTo(employee2.getId());
+            reqHeader2.setSupplierLists(Arrays.asList(SUPPLIER_2)); // not setting
+            reqHeader2.setPoNotes("po notes for #2");
+            reqHeader2.setGlAcctNo(null);
+
+            List<POReqHeader> poReqHeaders2 = new ArrayList<>();
+
+            itemsList2 = new ArrayList<>(Arrays.asList(FAVITEM_2));
+            reqDetail2.setItems(itemsList2);
+            reqDetail2.setQty(4.0);
+            reqDetail2.setPrice(75.60);
+
+            reqHeader2.addPOReqDetail(reqDetail2);
+            poReqHeaders2.add(reqHeader2);
+
+            poReqDetailRepository.save(reqDetail2);  // must save first
+            poReqHeaderRepository.save(reqHeader2);
+
+            // PO REQ #3
+            POReqHeader reqHeader3 = new POReqHeader();
+            POReqDetail reqDetail3 = new POReqDetail();
+            List<POReqHeader> poReqHeaders3 = new ArrayList<>();
+
+            reqHeader3.setReqDate(LocalDate.parse("2023-06-06"));
+            reqHeader3.setApprovedBy(null);
+            reqHeader3.setApprovedDate(null);
+            reqHeader3.setCreatedDate(LocalDate.parse("2023-06-06"));
+            reqHeader3.setCreatedBy(employee1.getId());
+            reqHeader3.setDeliveryDate(LocalDate.parse("2023-06-19"));
+            reqHeader3.setReqNotesExternal("external req note for #3");
+            reqHeader3.setReqNotesInternal("internal req note for #3");
+            reqHeader3.setShipTo(employee2.getId());
+            reqHeader3.setSupplierLists(Arrays.asList(SUPPLIER_2)); // not setting
+            reqHeader3.setPoNotes("po notes for #3");
+            reqHeader3.setGlAcctNo(null);
+
+            itemsList3 = new ArrayList<>(Arrays.asList(FAVITEM_3));
+            reqDetail3.setItems(itemsList3);
+            reqDetail3.setQty(6.0);
+            reqDetail3.setPrice(105.60);
+
+            reqHeader3.addPOReqDetail(reqDetail3);
+            poReqHeaders3.add(reqHeader3);
+
+            poReqDetailRepository.save(reqDetail3);  // must save first
+            poReqHeaderRepository.save(reqHeader3);
+
+//            logger.info("reqHeader" + reqHeader);
+//            logger.info("reqDetail" + reqDetail);
         }
         logger.info("Count of seeded Purchase Order Requisition records from poReqHeaderDataLoader:  " + poReqHeaderRepository.count());
 

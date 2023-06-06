@@ -2,11 +2,14 @@ package com.avery.procure2pay.controller;
 
 import com.avery.procure2pay.model.*;
 import com.avery.procure2pay.repository.POReqHeaderRepository;
+import com.avery.procure2pay.repository.PoReqDetailRepository;
 import com.avery.procure2pay.seed.PurchaseRequisitionDataLoader;
+import com.avery.procure2pay.service.POReqDetailService;
 import com.avery.procure2pay.service.POReqHeaderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -15,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -44,7 +48,11 @@ class POReqHeaderControllerTest {
     @MockBean
     POReqHeaderRepository poReqHeaderRepository;
     @MockBean
+    PoReqDetailRepository poReqDetailRepository;
+    @MockBean
     POReqHeaderService poReqHeaderService;
+    @MockBean
+    POReqDetailService poReqDetailService;
 
     // create standard objects
 
@@ -61,7 +69,7 @@ class POReqHeaderControllerTest {
 
 //    List<POReqHeader> poReqHeaders = new ArrayList<>();
       //            poReqHeaders.add(reqHeader);
-    POReqDetail poReqDetail = new POReqDetail();
+//    POReqDetail poReqDetail = new POReqDetail();
 //    List<POReqHeader> poReqHeaders = new ArrayList<>();
 //        poReqHeaders.add(poReqHeader);
 //    itemsList = new ArrayList<>(Arrays.asList(FAVITEM_1));
@@ -171,26 +179,59 @@ class POReqHeaderControllerTest {
     }
 
     @Test
-    void addPOReqDetailToPOReqHeader_success() throws Exception {
-        POReqHeader poReqHeader = new POReqHeader(1L,null,null,LocalDate.parse("2023-06-01"), LocalDate.parse("2023-06-01"), "","","", "po notes","req notes inter", "req notes ext", 1L, null, 1L, LocalDate.parse("2023-06-01"), null,null);
-        logger.info("createPOreqHeader " + poReqDetail);
-//        logger.info("createPOreqHeader " + poReqDetail.);
-        poReqHeader.setSupplierLists(Arrays.asList(SUPPLIER_1));
+    void getPOReqDetails_success() throws Exception {
+        List<POReqHeader> poReqHeaders = new ArrayList<>();
+        POReqDetail poReqDetail = new POReqDetail();
 
-        when(poReqHeaderRepository.findById(anyLong())).thenReturn(Optional.of(poReqHeader));
+        List<ItemFavorites>itemsList = new ArrayList<>(Arrays.asList(FAVITEM_1));
+        poReqDetail.setId(1L);
+        poReqDetail.setItems(itemsList);
+        poReqDetail.setQty(2.0);
+        poReqDetail.setPrice(45.60);
 
-        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.post("/api/po-req/1/poReqDetailList/")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(this.mapper.writeValueAsString(poReqHeader));
+        logger.info("poReqDetail " + poReqDetail);
+//        poReqHeader.setPoReqDetailList(poReqDetail);
+        poReqHeaders.add(poReqHeader);
 
-//        mockMvc.perform(mockRequest)
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.data", notNullValue()))
-//                .andExpect(jsonPath("$.data.id").value(poReqHeader.getId()))
-////                .andExpect(jsonPath("$.data.supplier").value(poReqHeader.getSupplier()))
-////                .andExpect(jsonPath("$.message").value("success"))
-//                .andDo(print());
+        poReqDetailRepository.save(poReqDetail);  // must save first
+//        poReqDetailRepository.save(poReqDetail);  // must save first
+        poReqHeaderRepository.save(poReqHeader);
+//    reqHeader.setCreatedDate(LocalDate.parse("2023-06-04"));
+//     *             reqHeader.setCreatedBy(employee1.getId());
+//     *             reqHeader.setDeliveryDate(LocalDate.parse("2023-06-13"));
+//     *             reqHeader.setReqNotesExternal("external req note");
+//     *             reqHeader.setReqNotesInternal("internal req note");
+        List<POReqDetail> poReqDetailLists = new ArrayList<>(Arrays.asList(new POReqDetail(), new POReqDetail(), new POReqDetail()));
+
+        when(poReqDetailService.getPOReqDetails()).thenReturn(poReqDetailLists);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/po-req-details/")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(2));
     }
+
+//    @Test
+//    void addPOReqDetailToPOReqHeader_success() throws Exception {
+//        POReqHeader poReqHeader = new POReqHeader(1L,null,null,LocalDate.parse("2023-06-01"), LocalDate.parse("2023-06-01"), "","","", "po notes","req notes inter", "req notes ext", 1L, null, 1L, LocalDate.parse("2023-06-01"), null,null);
+//        logger.info("createPOreqHeader " + poReqDetail);
+////        logger.info("createPOreqHeader " + poReqDetail.);
+//        poReqHeader.setSupplierLists(Arrays.asList(SUPPLIER_1));
+//
+//        when(poReqHeaderRepository.findById(anyLong())).thenReturn(Optional.of(poReqHeader));
+//
+//        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.post("/api/po-req/1/poReqDetailList/")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .accept(MediaType.APPLICATION_JSON)
+//                .content(this.mapper.writeValueAsString(poReqHeader));
+//
+////        mockMvc.perform(mockRequest)
+////                .andExpect(status().isOk())
+////                .andExpect(jsonPath("$.data", notNullValue()))
+////                .andExpect(jsonPath("$.data.id").value(poReqHeader.getId()))
+//////                .andExpect(jsonPath("$.data.supplier").value(poReqHeader.getSupplier()))
+//////                .andExpect(jsonPath("$.message").value("success"))
+////                .andDo(print());
+//    }
 
 }
