@@ -42,7 +42,7 @@ public class PurchaseRequisitionDataLoader implements CommandLineRunner {
             Supplier SUPPLIER_1 = new Supplier(1L, "ZBiotics", "Tim Berry", "123-456-7890", "1234 Some Address","Austin","Texas","75600","234-567-8900","tim.berry@gmail.com");
             Supplier SUPPLIER_2 = new Supplier(2L, "Bright.md", "Joshua Landy", "213-546-8790", "2135 Some Address2","Austin","Texas","75610","214-657-9800","joshua.landy@gmail.com");
             Supplier SUPPLIER_3 = new Supplier(3L, "Cirrus Logic", "Susan Carrie", "312-654-0957", "3126 Some Address3","Austin","Texas","75630","432-675-0870","susan.carrie@gmail.com");
-            List<ItemFavorites> itemsList = Arrays.asList(FAVITEM_1, FAVITEM_2, FAVITEM_3);
+            List<ItemFavorites> itemsList = new ArrayList<>();//Arrays.asList(FAVITEM_1); //, FAVITEM_2, FAVITEM_3);
 
             POReqHeader reqHeader = new POReqHeader();
             POReqDetail reqDetail = new POReqDetail();
@@ -61,13 +61,23 @@ public class PurchaseRequisitionDataLoader implements CommandLineRunner {
 //            reqHeader.setSupplier();
             reqHeader.setPoNotes("po notes");
             reqHeader.setGlAcctNo(null);
-            poReqHeaderRepository.save(reqHeader);
-            logger.info("reqHeader" + reqHeader);
+//            poReqHeaderRepository.save(reqHeader);
+
             List<POReqHeader> poReqHeaders = new ArrayList<>();
-            poReqHeaders.add(reqHeader);
+//            poReqHeaders.add(reqHeader);
 
-
+            itemsList = new ArrayList<>(Arrays.asList(FAVITEM_1));
             reqDetail.setItems(itemsList);
+            reqDetail.setQty(2.0);
+            reqDetail.setPrice(45.60);
+
+            reqHeader.addPOReqDetail(reqDetail);
+            poReqHeaders.add(reqHeader);
+            poReqDetailRepository.save(reqDetail);  // must save first
+            poReqHeaderRepository.save(reqHeader);
+//            poReqDetailRepository.save(reqDetail);
+            logger.info("reqHeader" + reqHeader);
+            logger.info("reqDetail" + reqDetail);
         }
         logger.info("Count of seeded Purchase Order Requisition records from poReqHeaderDataLoader:  " + poReqHeaderRepository.count());
 
