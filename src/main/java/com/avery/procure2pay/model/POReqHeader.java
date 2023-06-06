@@ -20,7 +20,12 @@ public class POReqHeader {
     @Column
     private Long poNo;  // poNo associated to req
     // one poReqHeader record to many poReqDetail records
-    @OneToMany(mappedBy = "poReqHeader", orphanRemoval = true)
+    @ManyToMany
+    @JoinTable(
+            name="poReqHeader_detail",
+            joinColumns = @JoinColumn(name = "poReqHeader_id"),
+            inverseJoinColumns = @JoinColumn(name="poReqDetail_id")
+    )
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<POReqDetail> poReqDetailList = new ArrayList<>();
     @Column
@@ -222,6 +227,10 @@ public class POReqHeader {
 
     public void setApprovedDate(LocalDate approvedDate) {
         this.approvedDate = approvedDate;
+    }
+
+    public void addPOReqDetail(POReqDetail poReqDetail) {
+        poReqDetailList.add(poReqDetail);
     }
 
     @Override

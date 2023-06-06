@@ -23,9 +23,8 @@ public class POReqDetail {
     private Double price;
     // many poReqDetail records can belong to a poReqHeader record
     @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "poReqHeader_id")
-    private POReqHeader poReqHeader;
+    @ManyToMany(mappedBy = "poReqDetailList")
+    private final List<POReqHeader> poReqHeaders = new ArrayList();
     // multiple POs can have the same favItem
     @ManyToMany
     @JoinTable(
@@ -42,55 +41,37 @@ public class POReqDetail {
     public POReqDetail() {
     }
 
-    public POReqDetail(Long id, Double qty, Double price, POReqHeader poReqHeader, List<ItemFavorites> items) {
-        this.id = id;
-        this.qty = qty;
-        this.price = price;
-        this.poReqHeader = poReqHeader;
-        this.items = items;
-    }
-
-    public POReqDetail(Double qty, Double price, POReqHeader poReqHeader, List<ItemFavorites> items) {
-        this.qty = qty;
-        this.price = price;
-        this.poReqHeader = poReqHeader;
-        this.items = items;
-    }
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Double getQty() {
         return qty;
     }
 
-    public void setQty(Double qty) {
-        this.qty = qty;
-    }
-
     public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public POReqHeader getPoReqHeader() {
-        return poReqHeader;
-    }
-
-    public void setPoReqHeader(POReqHeader poReqHeader) {
-        this.poReqHeader = poReqHeader;
+    public List<POReqHeader> getPoReqHeaders() {
+        return poReqHeaders;
     }
 
     public List<ItemFavorites> getItems() {
         return items;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setQty(Double qty) {
+        this.qty = qty;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public void setItems(List<ItemFavorites> items) {
@@ -103,7 +84,7 @@ public class POReqDetail {
                 "id=" + id +
                 ", qty=" + qty +
                 ", price=" + price +
-                ", poReqHeader=" + poReqHeader +
+                ", poReqHeaders=" + poReqHeaders +
                 ", items=" + items +
                 '}';
     }
