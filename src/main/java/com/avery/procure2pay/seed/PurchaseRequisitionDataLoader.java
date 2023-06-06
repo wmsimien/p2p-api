@@ -35,6 +35,7 @@ public class PurchaseRequisitionDataLoader implements CommandLineRunner {
             Employee employee1 = new Employee("Cindy", "Smith", "Sales", "Rep", "cindy.smith@gmail.com", "");
             Employee employee2 = new Employee("Connie", "Jones", "Cooperate", "Receptionist", "connie.jones@gmail.com", "");
             Employee employee3 = new Employee("Timmy", "Blue", "Facilities", "Manager", "timmy.blue@gmail.com", "878787-001");
+
             ItemFavorites FAVITEM_1 = new ItemFavorites(1L, "Tubing", "Long Heavy Tubing", 25.75, "each");
             ItemFavorites FAVITEM_2 = new ItemFavorites(2L, "Small Tubing", "Small Lite Tubing", 15.75, "pounds");
             ItemFavorites FAVITEM_3 = new ItemFavorites(3L, "XSmall Tubing", "Xtra-Small Heavy Tubing", 5.75, "skids");

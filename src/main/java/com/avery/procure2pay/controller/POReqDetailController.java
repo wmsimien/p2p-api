@@ -25,17 +25,17 @@ public class POReqDetailController {
 
     static HashMap<String, Object> message = new HashMap<>();
 
-    @GetMapping(path="/po-req-details/")
-    public ResponseEntity<?> getPOReqDetails() {
-        List<POReqDetail> poReqDetailList = poReqDetailService.getPOReqDetails();
-        if (poReqDetailList.isEmpty()) {
-            message.put("message", "cannot find any purchase req details");
-            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
-        } else {
-            message.put("message", "success");
-            message.put("data", poReqDetailList);
-            return new ResponseEntity<>(message, HttpStatus.OK);
-        }
-    }
+//    @GetMapping(path="/po-req-details/")
+//    public ResponseEntity<?> getPOReqDetails() {
+//        List<POReqDetail> poReqDetailList = poReqDetailService.getPOReqDetails();
+//        if (poReqDetailList.isEmpty()) {
+//            message.put("message", "cannot find any purchase req details");
+//            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+//        } else {
+//            message.put("message", "success");
+//            message.put("data", poReqDetailList);
+//            return new ResponseEntity<>(message, HttpStatus.OK);
+//        }
+//    }
 
 }
