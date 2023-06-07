@@ -38,10 +38,22 @@ public class POReqHeaderController{
      */
     @PostMapping(path="/po-req/")
     public ResponseEntity<?> createPOReqHeader(@RequestBody POReqHeader poReqHeader) {
-        POReqHeader newPurchaseReq = poReqHeaderService.createPOReqHeader(poReqHeader);
-        if (newPurchaseReq != null) {
+        POReqHeader newPurchaseReqHeader = poReqHeaderService.createPOReqHeader(poReqHeader);
+        if (newPurchaseReqHeader != null) {
             message.put("message", "success");
-            message.put("data", newPurchaseReq);
+            message.put("data", newPurchaseReqHeader);
+            return new ResponseEntity<>(message, HttpStatus.CREATED);
+        } else {
+            message.put("message", "unable to create a purchase req at this time");
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<?> createPOReqDetail(@PathVariable(value="poReqHeaderId") Long poReqHeaderId, @RequestBody POReqDetail poReqDetail) {
+        POReqHeader newPOReqHeader = poReqHeaderService.createPOReqDetail(poReqHeaderId, poReqDetail);
+        if (newPOReqHeader != null) {
+            message.put("message", "success");
+            message.put("data", newPOReqHeader);
             return new ResponseEntity<>(message, HttpStatus.CREATED);
         } else {
             message.put("message", "unable to create a purchase req at this time");

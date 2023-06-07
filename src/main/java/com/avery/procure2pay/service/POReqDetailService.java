@@ -28,4 +28,5 @@ public class POReqDetailService {
     public List<POReqDetail> getPOReqDetails() {
         return poReqDetailRepository.findAll();
     }
+
 }
