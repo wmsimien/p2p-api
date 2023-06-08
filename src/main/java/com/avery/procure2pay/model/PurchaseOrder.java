@@ -6,7 +6,6 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,11 +42,6 @@ public class PurchaseOrder {
     @Column
     private Long shipTo;
     // multiple POs can have the same favItem
-//    @JsonIgnore
-//    @ManyToOne
-//    @JoinColumn(name="item_id")
-//    private ItemFavorites item;
-    // should be ManyToMany
     @ManyToMany
     @JoinTable(
             name="purchaseOrder_item",
@@ -60,18 +54,10 @@ public class PurchaseOrder {
     @ManyToOne
     @JoinColumn(name="supplier_id")
     private Supplier supplier;
-//    @JsonIgnore
-//    @ManyToOne
-//    @JoinColumn(name="employee_id")
-//    private Employee createdBy;
     @Column
     private Long createdBy;
     @Column
     private LocalDate createdDate;
-//    @JsonIgnore
-//    @ManyToOne
-//    @JoinColumn(name="employee_id")
-//    private Employee approvedBy;
     @Column
     private Long approvedBy;
     @Column
@@ -82,7 +68,6 @@ public class PurchaseOrder {
     }
 
     public PurchaseOrder(Long id, Long reqNo, LocalDate reqDate, Double qty, Double price, LocalDate deliveryDate, String glAcctNo, String status, String paymentTerms, String poNotes, String reqNotesInternal, String reqNotesExternal, Long shipTo,
-//                         ItemFavorites item,
                          Supplier supplier, Long createdBy, LocalDate createdDate, Long approvedBy, LocalDate approvedDate) {
         this.id = id;
         this.reqNo = reqNo;
@@ -97,7 +82,6 @@ public class PurchaseOrder {
         this.reqNotesInternal = reqNotesInternal;
         this.reqNotesExternal = reqNotesExternal;
         this.shipTo = shipTo;
-//        this.item = item;
         this.supplier = supplier;
         this.createdBy = createdBy;
         this.createdDate = createdDate;
@@ -209,16 +193,10 @@ public class PurchaseOrder {
         this.shipTo = shipTo;
     }
 
-//    public ItemFavorites getItem() {
-//        return item;
-//    }
     public List<ItemFavorites> getItems() {
         return items;
     }
 
-//    public void setItem(ItemFavorites item) {
-//        this.item = item;
-//    }
     public void addItem(ItemFavorites itemfav) {
         items.add(itemfav);
     }
@@ -279,7 +257,6 @@ public class PurchaseOrder {
                 ", reqNotesInternal='" + reqNotesInternal + '\'' +
                 ", reqNotesExternal='" + reqNotesExternal + '\'' +
                 ", shipTo=" + shipTo +
-//                ", item=" + item +
                 ", supplier=" + supplier +
                 ", createdBy=" + createdBy +
                 ", createdDate=" + createdDate +
