@@ -57,22 +57,6 @@ public class POReqDetail {
         return id;
     }
 
-    public Double getQty() {
-        return qty;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public List<POReqHeader> getPoReqHeaders() {
-        return poReqHeaders;
-    }
-
-    public List<ItemFavorites> getItems() {
-        return items;
-    }
-
     public void setId(Long id) {
         this.id = id;
     }

@@ -7,12 +7,13 @@ import com.avery.procure2pay.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
 public class POReqHeaderService {
+
 
     @Autowired
     PoReqDetailRepository poReqDetailRepository;
@@ -44,8 +45,24 @@ public class POReqHeaderService {
     }
 
     /**
-     * Method calls repository to obtain a listing of all POReqs.
-     * @return All POReqs records listing.
+     * Method calls repository to create purchase order requisition detail record for data elements provided.
+     * @param poReqHeaderId POReqHeader id to associated to new po req detail record.
+     * @param poReqDetail POReqDetail data elements.
+     * @return Created POReqHeader record.
+     */
+    public POReqHeader createPOReqDetail(Long poReqHeaderId, POReqDetail poReqDetail) {
+        Optional<POReqHeader> foundPOReqHeader = poReqHeaderRepository.findById(poReqHeaderId);
+        if (foundPOReqHeader.isPresent()) {
+            POReqDetail newPOReqDetail = poReqDetailRepository.save(poReqDetail);
+            foundPOReqHeader.get().addPOReqDetail(newPOReqDetail);
+            foundPOReqHeader = Optional.of(poReqHeaderRepository.save(foundPOReqHeader.get()));
+        }
+        return foundPOReqHeader.get();
+    }
+
+    /**
+     * Method calls repository to obtain all POReqs.
+      * @return List of POReq records.
      */
     public List<POReqHeader> getPOReqs() {
         return poReqHeaderRepository.findAll();
@@ -96,7 +113,7 @@ public class POReqHeaderService {
      * Method calls repository to obtain all POReqDetails.
      * @return Listing of all POReqDetail records.
      */
-    public List<POReqDetail> getPOReqDetails() {
-        return poReqDetailRepository.findAll();
+    public Optional<POReqDetail> getPOReqDetailsById(Long id) {
+        return poReqDetailRepository.findById(id);
     }
 }

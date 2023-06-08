@@ -2,8 +2,6 @@ package com.avery.procure2pay.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
-
-
 @Entity
 @Table(name="suppliers")
 public class Supplier {

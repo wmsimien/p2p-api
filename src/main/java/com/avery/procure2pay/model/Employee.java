@@ -28,7 +28,6 @@ public class Employee {
 
     @Column
     private String gl_acct_no;
-
     public Employee() {
     }
 

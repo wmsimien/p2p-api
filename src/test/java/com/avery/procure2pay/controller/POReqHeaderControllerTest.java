@@ -67,36 +67,48 @@ class POReqHeaderControllerTest {
     Supplier SUPPLIER_3 = new Supplier(3L, "Cirrus Logic", "Susan Carrie", "312-654-0957", "3126 Some Address3","Austin","Texas","75630","432-675-0870","susan.carrie@gmail.com");
     POReqHeader poReqHeader = new POReqHeader(1L, (Long) null, null,LocalDate.parse("2023-06-01"), LocalDate.parse("2023-06-01"), "","","", "po notes","req notes inter", "req notes ext", 1L, null, null, LocalDate.parse("2023-06-01"), null, (LocalDate) null);
 
-//    List<POReqHeader> poReqHeaders = new ArrayList<>();
-      //            poReqHeaders.add(reqHeader);
-//    POReqDetail poReqDetail = new POReqDetail();
-//    List<POReqHeader> poReqHeaders = new ArrayList<>();
-//        poReqHeaders.add(poReqHeader);
-//    itemsList = new ArrayList<>(Arrays.asList(FAVITEM_1));
-//    reqHeader.addPOReqDetail(reqDetail);
-//     *             poReqHeaders.add(reqHeader);
-//     *             poReqDetailRepository.save(reqDetail);  // must save first
-//     *             poReqHeaderRepository.save(reqHeader);
-//    reqHeader.setCreatedDate(LocalDate.parse("2023-06-04"));
-//     *             reqHeader.setCreatedBy(employee1.getId());
-//     *             reqHeader.setDeliveryDate(LocalDate.parse("2023-06-13"));
-//     *             reqHeader.setReqNotesExternal("external req note");
-//     *             reqHeader.setReqNotesInternal("internal req note");
 
 
 
 
-    /**
-     *
-     * @throws Exception
-     */
+
     @Test
     void createPOReqHeader_success() throws Exception {
-
         when(poReqHeaderService.createPOReqHeader(Mockito.any(POReqHeader.class))).thenReturn(poReqHeader);
         poReqHeader.setSupplierLists(Arrays.asList(SUPPLIER_1));
 
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.post("/api/po-req/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(this.mapper.writeValueAsString(poReqHeader));
+
+        mockMvc.perform(mockRequest)
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.data", notNullValue()))
+                .andExpect(jsonPath("$.data.id").value(poReqHeader.getId()))
+                .andExpect(jsonPath("$.message").value("success"))
+                .andDo(print());
+    }
+
+    @Test
+    void createPOReqDetail_success() throws Exception {
+        when(poReqHeaderService.createPOReqDetail(anyLong(), Mockito.any(POReqDetail.class))).thenReturn(poReqHeader);
+
+        List<ItemFavorites> itemsList1 = Arrays.asList(FAVITEM_1);
+        POReqDetail reqDetail = new POReqDetail();
+        reqDetail.setItems(itemsList1);
+        reqDetail.setQty(6.0);
+        reqDetail.setPrice(105.60);
+        logger.info("reqDetails " + reqDetail);
+//        POReqDetail newReqDetail = poReqDetailRepository.save(reqDetail);
+//        poReqHeader.addPOReqDetail(newReqDetail);
+//        reqHeader2.addPOReqDetail(reqDetail2);
+
+//        poReqHeader.setPoReqDetailList(reqDetail);
+//        poReqHeaderRepository.save(poReqHeader);
+
+
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.post("/api/po-req/{poReqHeaderId}/", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(this.mapper.writeValueAsString(poReqHeader));

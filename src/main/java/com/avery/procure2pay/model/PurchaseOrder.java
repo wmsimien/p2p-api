@@ -6,7 +6,6 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,7 +82,6 @@ public class PurchaseOrder {
         this.reqNotesInternal = reqNotesInternal;
         this.reqNotesExternal = reqNotesExternal;
         this.shipTo = shipTo;
-//        this.item = item;
         this.supplier = supplier;
         this.createdBy = createdBy;
         this.createdDate = createdDate;

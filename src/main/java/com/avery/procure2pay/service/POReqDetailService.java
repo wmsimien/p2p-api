@@ -18,7 +18,6 @@ public class POReqDetailService {
         this.poReqDetailRepository = poReqDetailRepository;
     }
 
-
     /**
      * Method obtains a listing of all po req detail records
      * @return
@@ -26,4 +25,5 @@ public class POReqDetailService {
     public List<POReqDetail> getPOReqDetails() {
         return poReqDetailRepository.findAll();
     }
+
 }
