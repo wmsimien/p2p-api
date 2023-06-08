@@ -11,9 +11,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
 public class POReqHeaderService {
+
+    Logger logger = Logger.getLogger(POReqHeaderService.class.getName());
 
     @Autowired
     PoReqDetailRepository poReqDetailRepository;
@@ -36,7 +39,7 @@ public class POReqHeaderService {
     }
 
     /**
-     *
+     * Method created purchase order requisition header record for data elements provided.
      * @param poReqHeader
      * @return
      */
@@ -44,6 +47,12 @@ public class POReqHeaderService {
         return poReqHeaderRepository.save(poReqHeader);
     }
 
+    /**
+     * Method created purchase order requisition detail record for data elements provided.
+     * @param poReqHeaderId
+     * @param poReqDetail
+     * @return
+     */
     public POReqHeader createPOReqDetail(Long poReqHeaderId, POReqDetail poReqDetail) {
         Optional<POReqHeader> foundPOReqHeader = poReqHeaderRepository.findById(poReqHeaderId);
         if (foundPOReqHeader.isPresent()) {
@@ -79,6 +88,7 @@ public class POReqHeaderService {
      * @throws InformationNotFoundException
      */
     public Optional<POReqHeader> updatePOReqById(Long poReqHeaderId, POReqHeader poReqHeader) throws InformationNotFoundException {
+        logger.info("updatePOReqById " + poReqHeaderId + poReqHeader);
         Optional<POReqHeader> poReqToUpdate = poReqHeaderRepository.findById(poReqHeaderId);
         if (poReqToUpdate.isEmpty()) {
             throw new InformationNotFoundException("cannot find po-req with id " + poReqHeaderId);
@@ -107,7 +117,7 @@ public class POReqHeaderService {
      *
      * @return
      */
-    public List<POReqDetail> getPOReqDetails() {
-        return poReqDetailRepository.findAll();
+    public Optional<POReqDetail> getPOReqDetailsById(Long id) {
+        return poReqDetailRepository.findById(id);
     }
 }

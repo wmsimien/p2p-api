@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping(path="/api")
 public class ItemsFavoritesController {
+
+    Logger logger = Logger.getLogger(ItemsFavoritesController.class.getName());
 
     @Autowired
     ItemFavoritesService itemFavoritesService;
@@ -85,6 +88,8 @@ public class ItemsFavoritesController {
      */
     @PutMapping(path="/items/{itemId}/")
     public ResponseEntity<?> updateItemFavoritesById(@PathVariable(value="itemId") Long itemId, @RequestBody ItemFavorites itemFavoritesObject) throws InformationNotFoundException {
+        logger.info("controller - updateItemFavoritesById " + itemId );
+        logger.info("controller - updateItemFavoritesById " + itemFavoritesObject);
         Optional<ItemFavorites> favItemToUpdate = itemFavoritesService.updateItemFavoritesById(itemId, itemFavoritesObject);
         if (favItemToUpdate.isEmpty()) {
             message.put("message", "cannot find favorite item with id " + itemId);
