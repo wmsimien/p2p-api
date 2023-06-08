@@ -32,9 +32,10 @@ public class POReqHeaderController{
 
 
     /**
-     *
-     * @param poReqHeader
-     * @return
+     * Endpoint calls method to create a purchase order requisition header record.
+     * @param poReqHeader Data element to create new req record.
+     * @return  POReqHeader record that was created with a Httpstatus of 201; otherwise, if nat able to create a new req,
+     * a Httpstatus of 404 is response provided.
      */
     @PostMapping(path="/po-req/")
     public ResponseEntity<?> createPOReqHeader(@RequestBody POReqHeader poReqHeader) {
@@ -50,8 +51,8 @@ public class POReqHeaderController{
     }
 
     /**
-     *
-     * @return
+     * Endpoint calls method to obtain all purchase order requisitions.
+     * @return Listing of all purchase orders.
      */
     @GetMapping(path="/po-req/")
     public ResponseEntity<?> getPOReqs() {
@@ -67,9 +68,9 @@ public class POReqHeaderController{
     }
 
     /**
-     *
-     * @param poReqHeaderId
-     * @return
+     * Endpoint calls method to obtain purchase order requisition for a specific POReqHeader.
+     * @param poReqHeaderId POReqHeader to obtain.
+     * @return HttpStatus of 200 on success and 404 when record is not found.
      */
     @GetMapping(path="/po-req/{poReqHeaderId}/")
     public ResponseEntity<?> getPOReqById(@PathVariable(value="poReqHeaderId") Long poReqHeaderId) {
@@ -85,58 +86,32 @@ public class POReqHeaderController{
     }
 
     /**
-     *
-     * @param poReqHeaderId
-     * @param poReqHeader
-     * @return
+     * Endpoint calls method to update a specific POReqHeader record.
+     * @param poReqHeaderId Specific req header record.
+     * @param poReqHeader Specific data to use in update.
+     * @return HttpStatus of 404 when record is not found for update and a HttpStatus
+     * of 200 on successful update.
      * @throws InformationNotFoundException
      */
     @PutMapping(path="/po-req/{poReqHeaderId}/")
     public ResponseEntity<?> updatePOReqById(@PathVariable(value="poReqHeaderId") Long poReqHeaderId, @RequestBody POReqHeader poReqHeader) throws InformationNotFoundException {
-        Optional<POReqHeader> poReqToUpdate = poReqHeaderRepository.findById(poReqHeaderId);//poReqHeaderService.getPOReqById(poReqHeaderId);
+        Optional<POReqHeader> poReqToUpdate = poReqHeaderService.updatePOReqById(poReqHeaderId, poReqHeader);
         if (poReqToUpdate.isEmpty()) {
             message.put("message", "cannot find po-req with id " + poReqHeaderId);
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         } else {
-            poReqToUpdate.get().setReqDate(poReqHeader.getReqDate());
-            poReqToUpdate.get().setSupplierLists(poReqHeader.getSupplierLists());
-            poReqToUpdate.get().setApprovedBy(poReqHeader.getApprovedBy());
-            poReqToUpdate.get().setApprovedDate(poReqHeader.getApprovedDate());
-            poReqToUpdate.get().setCreatedDate(poReqHeader.getCreatedDate());
-            poReqToUpdate.get().setCreatedBy(poReqHeader.getCreatedBy());
-            poReqToUpdate.get().setDeliveryDate(poReqHeader.getDeliveryDate());
-            poReqToUpdate.get().setReqNotesExternal(poReqHeader.getReqNotesExternal());
-            poReqToUpdate.get().setReqNotesInternal(poReqHeader.getReqNotesInternal());
-            poReqToUpdate.get().setStatus(poReqHeader.getStatus());
-            poReqToUpdate.get().setPaymentTerms(poReqHeader.getPaymentTerms());
-            poReqToUpdate.get().setShipTo(poReqHeader.getShipTo());
-            poReqToUpdate.get().setPoNotes(poReqHeader.getPoNotes());
-            poReqToUpdate.get().setGlAcctNo(poReqHeader.getGlAcctNo());
-            poReqHeaderRepository.save(poReqToUpdate.get());
             message.put("message", "purchase order with id " + poReqHeaderId + " has been successfully updated");
             message.put("data", poReqToUpdate.get());
             return new ResponseEntity<>(message, HttpStatus.OK);
         }
     }
 
-    @GetMapping(path="/po-req-details/")
-    public ResponseEntity<?> getPOReqDetails() {
-        List<POReqDetail> poReqDetailList = poReqDetailService.getPOReqDetails();
-        if (poReqDetailList.isEmpty()) {
-            message.put("message", "cannot find any purchase req details");
-            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
-        } else {
-            message.put("message", "success");
-            message.put("data", poReqDetailList);
-            return new ResponseEntity<>(message, HttpStatus.OK);
-        }
-    }
-
     /**
-     *
-     * @param poReqHeaderId
-     * @param poReqDetail
-     * @return
+     * Endpoint calls method to update req detail record(s) for a specific req header record.
+     * @param poReqHeaderId Req header id of the associated req detail record.
+     * @param poReqDetail Data elements to user for updating.
+     * @return HttStatus of 200 on success and a 404 when the associated req header record
+     * is not found.
      */
     @PostMapping(path="/po-req/{poReqHeaderId}/poReqDetailList")
     public ResponseEntity<?> addPOReqDetailToPOReqHeader(@PathVariable(value="poReqHeaderId") Long poReqHeaderId, @RequestBody POReqDetail poReqDetail) {
@@ -154,9 +129,9 @@ public class POReqHeaderController{
     }
 
     /**
-     *
-     * @param poReqHeaderId
-     * @return
+     * Endpoint calls method to delete the specific req header record and associated req detail records.
+     * @param poReqHeaderId ReqHeader record id to remove.
+     * @return HttpStatus of 200 when successful and a 404 when the record is not found in order to be deleted.
      */
     @DeleteMapping(path="/po-req/{poReqHeaderId}/")
     public ResponseEntity<?> deletePOReqById(@PathVariable(value="poReqHeaderId") Long poReqHeaderId) {
