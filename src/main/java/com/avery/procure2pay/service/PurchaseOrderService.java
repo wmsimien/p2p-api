@@ -80,9 +80,6 @@ public class PurchaseOrderService {
     public Optional<PurchaseOrder> updatePurchaseOrderById(Long purchaseOrderId, PurchaseOrder purchaseOrderObject) throws InformationNotFoundException {
         Optional<PurchaseOrder> purchaseOrder = purchaseOrderRepository.findById(purchaseOrderId);
         if (purchaseOrder.isPresent()) {
-//            purchaseOrder.get().setItem(purchaseOrderObject.getItem());
-//            ItemFavorites itemFavorites = itemFavoritesRepository.
-
             purchaseOrder.get().setApprovedBy(purchaseOrderObject.getApprovedBy());
             purchaseOrder.get().setApprovedDate(purchaseOrderObject.getApprovedDate());
             purchaseOrder.get().setDeliveryDate(purchaseOrderObject.getDeliveryDate());
