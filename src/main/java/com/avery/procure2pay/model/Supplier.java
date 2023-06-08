@@ -1,11 +1,7 @@
 package com.avery.procure2pay.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name="suppliers")
@@ -49,9 +45,6 @@ public class Supplier {
     @Column
     private String status = "Active";
 
-//    @OneToMany(mappedBy = "supplier", orphanRemoval = true)
-//    @LazyCollection(LazyCollectionOption.FALSE)
-//    private List<POReqHeader> poReqHeaderList;
     @ManyToOne
     @JoinColumn(name="supplier_id")
     @JsonIgnore

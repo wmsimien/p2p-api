@@ -1,6 +1,5 @@
 package com.avery.procure2pay.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -12,7 +11,6 @@ import java.util.List;
 @Entity
 @Table(name="poReqHeaders")
 public class POReqHeader {
-
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,9 +45,6 @@ public class POReqHeader {
     @Column
     private Long shipTo;
     // only one supplier purchase req
-//    @JsonIgnore
-//    @ManyToOne
-//    @JoinColumn(name="supplier_id")
     @OneToMany(mappedBy = "poReqHeader")
     private List<Supplier> supplierLists = new ArrayList<>();
     @Column
@@ -110,21 +105,6 @@ public class POReqHeader {
         this.id = id;
     }
 
-    public Long getPoNo() {
-        return poNo;
-    }
-
-    public void setPoNo(Long poNo) {
-        this.poNo = poNo;
-    }
-
-    public List<POReqDetail> getPoReqDetailList() {
-        return poReqDetailList;
-    }
-
-    public void setPoReqDetailList(List<POReqDetail> poReqDetailList) {
-        this.poReqDetailList = poReqDetailList;
-    }
 
     public LocalDate getReqDate() {
         return reqDate;

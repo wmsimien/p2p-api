@@ -5,7 +5,6 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,22 +55,6 @@ public class POReqDetail {
 
     public Long getId() {
         return id;
-    }
-
-    public Double getQty() {
-        return qty;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public List<POReqHeader> getPoReqHeaders() {
-        return poReqHeaders;
-    }
-
-    public List<ItemFavorites> getItems() {
-        return items;
     }
 
     public void setId(Long id) {
