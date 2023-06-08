@@ -5,11 +5,7 @@ import com.avery.procure2pay.model.POReqDetail;
 import com.avery.procure2pay.model.POReqHeader;
 import com.avery.procure2pay.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 import java.util.List;
@@ -39,25 +35,25 @@ public class POReqHeaderService {
     }
 
     /**
-     *
-     * @param poReqHeader
-     * @return
+     * Method calls repository to create a po req header record.
+     * @param poReqHeader Data elements used to create po req header record.
+     * @return Updated POReqHeader record.
      */
     public POReqHeader createPOReqHeader(POReqHeader poReqHeader) {
         return poReqHeaderRepository.save(poReqHeader);
     }
 
     /**
-     *
-     * @return
+     * Method calls repository to obtain a listing of all POReqs.
+     * @return All POReqs records listing.
      */
     public List<POReqHeader> getPOReqs() {
         return poReqHeaderRepository.findAll();
     }
 
     /**
-     *
-     * @param poReqHeaderId
+     * Method calls repository to obtains specific POReq record by id.
+     * @param poReqHeaderId Specific po req id
      * @return
      */
     public Optional<POReqHeader> getPOReqById(Long poReqHeaderId) {
@@ -65,10 +61,10 @@ public class POReqHeaderService {
     }
 
     /**
-     *
-     * @param poReqHeaderId
-     * @param poReqHeader
-     * @return
+     * Method calls repository to update a specific POReq based on id.
+     * @param poReqHeaderId Specific POReqHeader id
+     * @param poReqHeader POReqHeader data for updating.
+     * @return Updated POReqHeader data.
      * @throws InformationNotFoundException
      */
     public Optional<POReqHeader> updatePOReqById(Long poReqHeaderId, POReqHeader poReqHeader) throws InformationNotFoundException {
@@ -97,8 +93,8 @@ public class POReqHeaderService {
     }
 
     /**
-     *
-     * @return
+     * Method calls repository to obtain all POReqDetails.
+     * @return Listing of all POReqDetail records.
      */
     public List<POReqDetail> getPOReqDetails() {
         return poReqDetailRepository.findAll();
