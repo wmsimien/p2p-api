@@ -6,17 +6,15 @@ import com.avery.procure2pay.model.POReqDetail;
 import com.avery.procure2pay.model.POReqHeader;
 import com.avery.procure2pay.repository.POReqHeaderRepository;
 import com.avery.procure2pay.repository.PoReqDetailRepository;
-import com.avery.procure2pay.service.POReqDetailService;
 import com.avery.procure2pay.service.POReqHeaderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
+
 
 
 @RestController

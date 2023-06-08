@@ -3,8 +3,6 @@ package com.avery.procure2pay.service;
 import com.avery.procure2pay.model.POReqDetail;
 import com.avery.procure2pay.repository.PoReqDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
