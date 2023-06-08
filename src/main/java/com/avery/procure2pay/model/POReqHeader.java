@@ -46,10 +46,6 @@ public class POReqHeader {
     private String reqNotesExternal;
     @Column
     private Long shipTo;
-    // only one supplier purchase req
-//    @JsonIgnore
-//    @ManyToOne
-//    @JoinColumn(name="supplier_id")
     @OneToMany(mappedBy = "poReqHeader")
     private List<Supplier> supplierLists = new ArrayList<>();
     @Column

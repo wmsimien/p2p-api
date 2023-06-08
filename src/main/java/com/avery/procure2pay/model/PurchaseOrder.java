@@ -60,18 +60,10 @@ public class PurchaseOrder {
     @ManyToOne
     @JoinColumn(name="supplier_id")
     private Supplier supplier;
-//    @JsonIgnore
-//    @ManyToOne
-//    @JoinColumn(name="employee_id")
-//    private Employee createdBy;
     @Column
     private Long createdBy;
     @Column
     private LocalDate createdDate;
-//    @JsonIgnore
-//    @ManyToOne
-//    @JoinColumn(name="employee_id")
-//    private Employee approvedBy;
     @Column
     private Long approvedBy;
     @Column
@@ -82,7 +74,6 @@ public class PurchaseOrder {
     }
 
     public PurchaseOrder(Long id, Long reqNo, LocalDate reqDate, Double qty, Double price, LocalDate deliveryDate, String glAcctNo, String status, String paymentTerms, String poNotes, String reqNotesInternal, String reqNotesExternal, Long shipTo,
-//                         ItemFavorites item,
                          Supplier supplier, Long createdBy, LocalDate createdDate, Long approvedBy, LocalDate approvedDate) {
         this.id = id;
         this.reqNo = reqNo;
@@ -97,7 +88,6 @@ public class PurchaseOrder {
         this.reqNotesInternal = reqNotesInternal;
         this.reqNotesExternal = reqNotesExternal;
         this.shipTo = shipTo;
-//        this.item = item;
         this.supplier = supplier;
         this.createdBy = createdBy;
         this.createdDate = createdDate;
