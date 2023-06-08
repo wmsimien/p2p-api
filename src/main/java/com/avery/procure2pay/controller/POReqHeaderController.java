@@ -30,9 +30,7 @@ public class POReqHeaderController{
     @Autowired
     POReqHeaderService poReqHeaderService;
 
-
     static HashMap<String, Object> message = new HashMap<>();
-
 
     /**
      * Endpoint calls method to create a purchase order requisition header record.
