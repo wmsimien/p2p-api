@@ -16,7 +16,14 @@ A Client requested an application which will provide their buyers the flexibilit
 - [Contributing](#contributing)
 
 ## Project Planning
-GitHub Projects was instrumental in keeping on track and focused on the many task to complete and/or rethink. A task/todos was created for needed starting with obtaining/creating the user stories and detailing those requirements out on paper and generating an ERD diagram.  From there the project was created, then the database and models/tables.  Building the correct relationships between the tables was keen in creating the needed endpoints.  After completing each task, I moved them from 'In Progress' to 'Complete' with GitHub Projects which kept me moving forward without needing to consider what task/step was up next.  After all the endpoints was working as designed to meet requirements, security, JWT and user features were added ensuring private endpoints where private and only the two public endpoints where public. After adding the user to each endpoint ensuring they meet each requirement as designed, I moved onto documentation.  Ensuring all objects were documented and needed elements/sections were covered in the README brought the project a completion.
+GitHub Projects was instrumental in keeping on track and focused on the many tasks to complete and/or rethink for the project. During the brainstorm exercise, an ERD and wire-frame was created based on the user stories provided by the client.  After meeting with the client to go over those artifacts and obtain sign-off, each user story would become a task/todo within the project tool.  
+
+A decision was made to break the project up into phrases for the backend application (API) and the frontend application (Client), as well.  There would be a combination of the API and Client applications in each phase.  The first phase for the API would be creating the models, controllers, repositories, test, and endpoints.
+
+
+ 
+
+Ensuring all objects were documented and needed elements/sections were covered in the README brought the project a completion.
 
 
 ## User Stories
