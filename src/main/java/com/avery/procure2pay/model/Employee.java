@@ -2,7 +2,6 @@ package com.avery.procure2pay.model;
 
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name="employees")
