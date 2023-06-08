@@ -17,11 +17,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@WebMvcTest(POReqDetailController.class)
-class POReqDetailControllerTest {
+@WebMvcTest(POReqDetailController_NotUsing.class)
+class POReqDetailControllerNotUsingTest {
 
     @Autowired
     private MockMvc mockMvc;
