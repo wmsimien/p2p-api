@@ -100,7 +100,7 @@ public class PurchaseRequisitionDataLoader implements CommandLineRunner {
 
             itemsList2 = new ArrayList<>(Arrays.asList(FAVITEM_2));
             reqDetail2.setItems(itemsList2);
-            reqDetail2.setQty(4.0);
+            reqDetail2.setQty(400.0);
             reqDetail2.setPrice(75.60);
 
             reqHeader2.addPOReqDetail(reqDetail2);
@@ -146,9 +146,13 @@ public class PurchaseRequisitionDataLoader implements CommandLineRunner {
 
         if (purchaseOrderRepository.count() == 0) {
 
-            ItemFavorites FAVITEM_1 = new ItemFavorites(1L, "Tubing", "Long Heavy Tubing", 25.75, "each");
-            ItemFavorites FAVITEM_2 = new ItemFavorites(2L, "Small Tubing", "Small Lite Tubing", 15.75, "pounds");
-            ItemFavorites FAVITEM_3 = new ItemFavorites(3L, "XSmall Tubing", "Xtra-Small Heavy Tubing", 5.75, "skids");
+//            ItemFavorites FAVITEM_1 = new ItemFavorites(1L, "Tubing", "Long Heavy Tubing", 25.75, "each");
+//            ItemFavorites FAVITEM_2 = new ItemFavorites(2L, "Small Tubing", "Small Lite Tubing", 15.75, "pounds");
+//            ItemFavorites FAVITEM_3 = new ItemFavorites(3L, "XSmall Tubing", "Xtra-Small Heavy Tubing", 5.75, "skids");
+
+            ItemFavorites FAVITEM_1 = new ItemFavorites(1L,"Tubing", "Long Heavy Tubing", 25.75, "Each");
+            ItemFavorites FAVITEM_2 = new ItemFavorites(2L,"Pens", "Bright Alpha Soft Touch w/ Stylus", .88, "Each");
+            ItemFavorites FAVITEM_3 = new ItemFavorites(3L,"Lay's Chips", "Kettle Cooked Variety Pack", 22.29, "Each");
 
             Supplier SUPPLIER_1 = new Supplier(1L, "ZBiotics", "Tim Berry", "123-456-7890", "1234 Some Address","Austin","Texas","75600","234-567-8900","tim.berry@gmail.com");
             Supplier SUPPLIER_2 = new Supplier(2L, "Bright.md", "Joshua Landy", "213-546-8790", "2135 Some Address2","Austin","Texas","75610","214-657-9800","joshua.landy@gmail.com");
