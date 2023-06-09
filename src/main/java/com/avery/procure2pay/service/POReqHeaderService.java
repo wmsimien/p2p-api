@@ -36,37 +36,37 @@ public class POReqHeaderService {
     }
 
     /**
-     *
-     * @param poReqHeader
-     * @return
+     * Method calls repo to create a po req header record
+     * @param poReqHeader po req header data elements
+     * @return update po req header record
      */
     public POReqHeader createPOReqHeader(POReqHeader poReqHeader) {
         return poReqHeaderRepository.save(poReqHeader);
     }
 
     /**
-     *
-     * @return
+     * Method call po req header repo to obtain a list of all po reqs
+     * @return a list of all reqs
      */
     public List<POReqHeader> getPOReqs() {
         return poReqHeaderRepository.findAll();
     }
 
     /**
-     *
-     * @param poReqHeaderId
-     * @return
+     * Method call po req head repo to obtain the record of a specific po header record
+     * @param poReqHeaderId po req header id of the associated record to obtain
+     * @return po req record of the specified id
      */
     public Optional<POReqHeader> getPOReqById(Long poReqHeaderId) {
         return poReqHeaderRepository.findById(poReqHeaderId);
     }
 
     /**
-     *
-     * @param poReqHeaderId
-     * @param poReqHeader
-     * @return
-     * @throws InformationNotFoundException
+     * Method call po req repo to update a specific po req record
+     * @param poReqHeaderId specific po req record
+     * @param poReqHeader po req header data elements
+     * @return updated po req record
+     * @throws InformationNotFoundException HttpStatus response
      */
     public Optional<POReqHeader> updatePOReqById(Long poReqHeaderId, POReqHeader poReqHeader) throws InformationNotFoundException {
         Optional<POReqHeader> poReqToUpdate = poReqHeaderRepository.findById(poReqHeaderId);
@@ -94,8 +94,8 @@ public class POReqHeaderService {
     }
 
     /**
-     *
-     * @return
+     * Method returns list of po req details from repo
+     * @return a list of all po req records
      */
     public List<POReqDetail> getPOReqDetails() {
         return poReqDetailRepository.findAll();
