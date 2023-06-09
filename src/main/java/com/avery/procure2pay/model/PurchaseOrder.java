@@ -42,12 +42,6 @@ public class PurchaseOrder {
     private String reqNotesExternal;
     @Column
     private Long shipTo;
-    // multiple POs can have the same favItem
-//    @JsonIgnore
-//    @ManyToOne
-//    @JoinColumn(name="item_id")
-//    private ItemFavorites item;
-    // should be ManyToMany
     @ManyToMany
     @JoinTable(
             name="purchaseOrder_item",
@@ -199,16 +193,10 @@ public class PurchaseOrder {
         this.shipTo = shipTo;
     }
 
-//    public ItemFavorites getItem() {
-//        return item;
-//    }
     public List<ItemFavorites> getItems() {
         return items;
     }
 
-//    public void setItem(ItemFavorites item) {
-//        this.item = item;
-//    }
     public void addItem(ItemFavorites itemfav) {
         items.add(itemfav);
     }
