@@ -2,7 +2,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## Description
-A Client requested an application which will provide their buyers the flexibility to create a purchase requisition for indirect goods and services like marketing, media and advertising services or travel, entertainment, or facilities services and turning that request into a purchase order. With more and more of their suppliers requesting cash on delivery, our client is researching ways of streamlining their process of making indirect purchases while maintaining some efficiencies and accountability in their accounts payable process.  With a COD payment terms, the client can pay their suppliers online at the time goods and services are delivered.
+A Client requested an application which will provide their buyers the flexibility to create a purchase order requisition for indirect goods and services like marketing, media and advertising services or travel, entertainment, or facilities services and converting that request into a purchase order. With more and more of their suppliers requesting cash on delivery, our client is researching ways of streamlining their process of making indirect purchases while maintaining some efficiencies and accountability in their accounts payable process.  With a COD payment terms, the client can pay their suppliers online at the time goods and services are delivered and connect the entire lifecycle of procurement from one phase to the next.
 
 
 # Table of Contents
@@ -21,7 +21,7 @@ GitHub Projects was instrumental in keeping on track and focused on the many tas
 ![Project Image 2](./images/Project_P2P_API-2.png)
 ![Project Image 3](./images/ERD_P2P.png)
 
-A decision was made to break the project up into phrases for the backend application (API) and the frontend application (Client), as well.  There would be a combination of the API and Client applications in each phase.  The first phase for the API would be creating the models, controllers, repositories, test, and endpoints.
+A decision was made to divide the project up into phases for the backend application (API) and the frontend application (Client), as well.  There would be a combination of the API and Client applications in each phase.  The first phase for the API would be creating the necessary components and endpoints.
 
 | Request Type | URL                        | Functionality              |  
 |--------------|----------------------------|----------------------------|
@@ -55,8 +55,8 @@ A decision was made to break the project up into phrases for the backend applica
 ## User Stories
 
 1. Users should be able to create and maintain an employee record.
-2. Users should be able to set an employee role as DOA or regular employee role like a Buyer. 
-2. User should be able to assign the DOA (delegation of authority) to a specific GL (General Ledger) expense account based on employee role which is required for this role.
+2. Users should be able to set an employee role as DOA (delegation of authority) or Buyer. 
+2. User should be able to assign the DOA (delegation of authority) to a specific GL (General Ledger) expense account.
 3. Users should be able to create and maintain a supplier record.
 4. Users should be able to create and maintain an item-favorites record.
 3. Users should be able to see a listing of all purchase order requisitions.
@@ -65,143 +65,106 @@ A decision was made to break the project up into phrases for the backend applica
 
 Using an API platform like Postman, you can access all operational endpoints of the Procure-To-Pay application which are available on port 8080.  For now, the H2 in memory database was chosen for this proof of concept; however, the endpoints will be consumed by a client application.
 
-![FTBAPI ERD](./src/main/resources/assets/FTBAPI_ERD.png)
-
-An unregistered user can only access the register endpoint as follows:
-### #2 To Create a New User (Register):
+### To Get All Employees (Employee Controller):
 ```
-localhost:9092/auth/users/register/
-
-{
-    "userName" : "jane",
-    "email": "jane@aol.com",
-    "password": "jane"
-}
+    /**
+     * Endpoint calls a method which obtains listing of all employees
+     * @return ResponseEntity to configure HTTP response to be NOT_FOUND when no employees are found and OK when employee results are found.
+    */
+    @GetMapping(path="/employees/")
+    public ResponseEntity<?> getAllEmployees() throws InformationNotFoundException {
+        List<Employee> employeeList = employeeService.getAllEmployees();
+        if (employeeList.isEmpty()){
+            message.put("message", "cannot find any employees");
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        } else {
+            message.put("message", "success");
+            message.put("data", employeeList);
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        }
+   }
 ```
-A registered user can accessc the login endpoint as follows:
-### #3 To Login As a Registered User:
+### To Get A Specific Supplier (Supplier Controller):
 ```
-localhost:9092/auth/users/login/
-
-{
-    "email":"jane@aol.com",
-    "password":"jane"
-}
-```
-
-Once the registered user logs in, a JWT will be returned which will be needed to access all the other endpoints.  The JWT will need to be added to every request/endpoint headers section with 'Authorization' as a Key and the Value will need to be Bear [JWT] as follows:
-![Postman Headers](./src/main/resources/assets/postman_headers.png)
-
-### #4 Create A Beverage Type
-```
-POST localhost:9092/api/beverage-type/
-{
-    "name":"MaeMae-Tea Drinks"
-    
-}
-
-RESPONSE 200 OK
-{
-    "id": 29,
-    "name": "MaeMae-Tea Drinks",
-    "beverageList": null
-}
-```
-
-### #5 Listing of All Beverage Types
-```
-GET localhost:9092/api/beverage-type/
-
-RESPONSE 200 OK
-[
-    {
-        "id": 29,
-        "name": "MaeMae-Tea Drinks",
-        "beverageList": []
+    /**
+     * Endpoint calls method to obtain a specific supplier based on supperId.
+     * @param supplierId Specified id of supplier.
+     * @return A httpStatus of 200 if able to find specific supplier and status of 404 if not able to find the supplier specified.
+     * @throws InformationNotFoundException Respond with custom message.
+    */
+    @GetMapping(path="/suppliers/{supplierId}")
+    public ResponseEntity<?> getSupplierById(@PathVariable(value="supplierId") Long supplierId) throws InformationNotFoundException {
+        Optional<Supplier> supplier =  supplierService.getSupplierById(supplierId);
+        if (supplier.isPresent()) {
+            message.put("message", "success");
+            message.put("data", supplier);
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else {
+            message.put("message", "cannot find any supplier with id " + supplierId);
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        }
     }
-]
 ```
 
-### #6 Update A Specific Beverage Type
+### To Create A New Item Favorite (ItemsFavorite Controller)
 ```
-PUT localhost:9092/api/beverage-type/29/
-{
-    "name":"MaeMae - Very Cherry Drinks"
-}
-
-RESPONSE 200 OK
-{
-    "id": 29,
-    "name": "MaeMae - Very Cherry Drinks",
-    "beverageList": []
-}
-```
-### #8 Create A Beverage For A Specific Beverage Type
-```
-POST localhost:9092/api/beverage-type/29/
-{
-    "name":"MaeMae - Cherry-Berry Drink",
-    "description":"Sweet Smooth Cherry Berry Fizzles",
-    "pairing":"Tofu/Chicken/Fish",
-    "goodToKnow":"Great w/ all eats.",
-    "proTip":"Enjoy w/ all eats"
-}
-
-RESPONSE 200 OK
-{
-    "id": 30,
-    "name": "MaeMae - Cherry-Berry Drink",
-    "description": "Sweet Smooth Cherry Berry Fizzles",
-    "pairing": "Tofu/Chicken/Fish",
-    "goodToKnow": "Great w/ all eats.",
-    "proTip": "Enjoy w/ all eats"
-}
-```
-
-### #11 Display A Listing Of All Beverage
-```
-GET localhost:9092/api/beverages/
-
-RESPONSE 200 OK
-[
-    {
-        "id": 12,
-        "name": "Java Twins",
-        "description": "Smooth Twin Java",
-        "pairing": "Tofu/Chicken/Fish",
-        "goodToKnow": "Great w/ all eats.",
-        "proTip": "Enjoy w/ all eats"
-    },
-    {
-        "id": 13,
-        "name": "Java Blend",
-        "description": "Smooth Blended Java",
-        "pairing": "Tofu/Chicken/Fish",
-        "goodToKnow": "Great w/ all eats.",
-        "proTip": "Enjoy w/ all eats"
-    },
-    {
-        "id": 29,
-        "name": "Java Blend",
-        "description": "Smooth Blended Java",
-        "pairing": "Tofu/Chicken/Fish",
-        "goodToKnow": "Great w/ all eats.",
-        "proTip": "Enjoy w/ all eats"
-    },
-    {
-        "id": 30,
-        "name": "MaeMae - Cherry-Berry Drink",
-        "description": "Sweet Smooth Cherry Berry Fizzles",
-        "pairing": "Tofu/Chicken/Fish",
-        "goodToKnow": "Great w/ all eats.",
-        "proTip": "Enjoy w/ all eats"
+    /**
+     * Endpoint calls method to create a new favorite item record.
+     * @param itemFavoritesObject Favorite item data to create new item record.
+     * @return Response stat us of 201 (CREATED) when successfully created and status of 404 when not able to create
+    */
+    @PostMapping(path="/items/")
+    public ResponseEntity<?> createItemFavorites(@RequestBody ItemFavorites itemFavoritesObject) throws InformationNotFoundException {
+        ItemFavorites itemFavorites = itemFavoritesService.createItemFavorites(itemFavoritesObject);
+        if (itemFavorites == null) {
+            message.put("message", "cannot find create item favorite");
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        } else {
+            message.put("message", "success");
+            message.put("data", itemFavorites);
+            return new ResponseEntity<>(message, HttpStatus.CREATED);
+        }
     }
-]
 ```
 
-5.    Users should be able to create a purchase requisition while providing the required details.
-6.  Users of a DOA role should be able to access a list of POs to approve.
-3. Users should be able to delete an item from an open purchase order. Users should be able to update detail information on an open purchase order. Users should not be able to update the created date on a purchase order. Users should not be able to update any information on a purchase order once approved or closed.
+### To Get A Listing Of All Purchase Order Requisition Records (POReqHeader Controller)
+```
+    /**
+     * Method will call service to obtain a listing of all purchase order reqs.
+     * @return List of all purchase order requisitions records.
+    */
+    @GetMapping(path="/po-req/")
+    public ResponseEntity<?> getPOReqs() {
+        List<POReqHeader> poReqLists = poReqHeaderService.getPOReqs();
+        if (poReqLists.isEmpty()) {
+            message.put("message", "cannot find any purchase reqs");
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        } else {
+            message.put("message", "success");
+            message.put("data", poReqLists);
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        }
+    }
+```
+
+### To Update A Specific Employee Record
+    /**
+    * Endpoint calls a method which creates a new employee record.
+    * @return Response of HttpStatus CREATED when new employee record is created and HttpStatus of OK when a new employee record cannot be created.
+    */
+    @PostMapping("/employees/")
+      public ResponseEntity<?> createEmployee(@RequestBody Employee employee) {
+      Employee newEmployee = employeeService.createEmployee(employee);
+        if (newEmployee != null){
+          message.put("message", "success");
+          message.put("data", newEmployee);
+          return new ResponseEntity<>(message, HttpStatus.CREATED);
+          } else {
+          message.put("message", "unable to create an employee at this time");
+          return new ResponseEntity<>(message, HttpStatus.OK);
+        }
+    }
+```
 
 ## Technologies Used
 
@@ -209,6 +172,7 @@ RESPONSE 200 OK
 - Spring Boot 2.7.8
 - H2 Database
 - MockMvc
+- PostMan
 - Lucidchart
 
 ## Installation

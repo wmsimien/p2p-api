@@ -50,8 +50,8 @@ public class POReqHeaderController{
     }
 
     /**
-     *
-     * @return
+     * Method will call service to obtain a listing of all purchase order reqs.
+     * @return List of all purchase order requisitions records.
      */
     @GetMapping(path="/po-req/")
     public ResponseEntity<?> getPOReqs() {
