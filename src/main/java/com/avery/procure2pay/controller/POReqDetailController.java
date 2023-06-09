@@ -13,10 +13,5 @@ import java.util.HashMap;
 @RequestMapping("/api")
 public class POReqDetailController {
 
-    @Autowired
-    private POReqDetailService poReqDetailService;
-
-
-    static HashMap<String, Object> message = new HashMap<>();
 
 }

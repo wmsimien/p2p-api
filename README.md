@@ -2,12 +2,12 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## Description
-A Client requested an application which will provide their buyers the flexibility to create a purchase requisition for indirect goods and services like marketing, media and advertising services or travel, entertainment, or facilities services and turning that request into a purchase order. With more and more of their suppliers requesting cash on delivery, our client is researching ways of streamlining their process of making indirect purchases while maintaining some efficiencies and accountability in their accounts payable process.
+A Client requested an application which will provide their buyers the flexibility to create a purchase requisition for indirect goods and services like marketing, media and advertising services or travel, entertainment, or facilities services and turning that request into a purchase order. With more and more of their suppliers requesting cash on delivery, our client is researching ways of streamlining their process of making indirect purchases while maintaining some efficiencies and accountability in their accounts payable process.  With a COD payment terms, the client can pay their suppliers online at the time goods and services are delivered.
+
 
 # Table of Contents
 - [Project Planning](#project-planning)
 - [User Stories](#user-stories)
-- [ERD](#erd)
 - [Technologies Used](#technologies-used)
 - [Installation](#installation)
 - [Usage](#usage)
@@ -17,35 +17,53 @@ A Client requested an application which will provide their buyers the flexibilit
 
 ## Project Planning
 GitHub Projects was instrumental in keeping on track and focused on the many tasks to complete and/or rethink for the project. During the brainstorm exercise, an ERD and wire-frame was created based on the user stories provided by the client.  After meeting with the client to go over those artifacts and obtain sign-off, each user story would become a task/todo within the project tool.  
+![Project Image 1](./images/Project_P2P_API-1.png)
+![Project Image 2](./images/Project_P2P_API-2.png)
+![Project Image 3](./images/ERD_P2P.png)
 
 A decision was made to break the project up into phrases for the backend application (API) and the frontend application (Client), as well.  There would be a combination of the API and Client applications in each phase.  The first phase for the API would be creating the models, controllers, repositories, test, and endpoints.
 
+| Request Type | URL                        | Functionality              |  
+|--------------|----------------------------|----------------------------|
+| GET          | api/employee/              | Get all employees          |
+| GET          | api/employee/{employeeId}/ | Get a specific employee    |
+| POST         | api/employee/              | Create an employee         |  
+| PUT          | api/employee/{employeeId}/ | Update a specific employee |   
 
- 
 
-Ensuring all objects were documented and needed elements/sections were covered in the README brought the project a completion.
+| Request Type | URL                        | Functionality              |  
+|--------------|----------------------------|----------------------------|
+| GET          | api/suppliers/             | Get all suppliers          |
+| GET          | api/suppliers/{supplierId}/ | Get a specific supplier    |
+| POST         | api/suppliers/             | Create a supplier          |
+| PUT          | api/suppliers/{supplierId} | Update a specific supplier |
+| DELETE       | api/suppliers/{supplierId} | Delete a specific supplier |
+
+| Request Type | URL                 | Functionality                   |  
+|--------------|---------------------|---------------------------------|
+| GET          | api/items/          | Get all item favorites          |
+| GET          | api/items/{itemId}/ | Get an item favorite            |
+| POST         | api/items/          | Create an item favorite         |
+| PUT          | api/items/{itemId}/ | Update an item favorite         |
+| DELETE       | api/items/{itemId}/ | Delete a specific item favorite |
+
+| Request Type | URL         | Functionality |  
+|--------------|-------------|---------------|
+| GET          | api/po-req/ | Get all reqs  |
 
 
 ## User Stories
-https://docs.google.com/document/d/1sIzwKBlCLPSUYdU6CzwdtqNyLfoyN84VbOtsOaX6tjw/edit?usp=sharing
 
-1. As an unregistered user of the Family Time Beverages API (FTBAPI), I should only have access to the following public urls/endpoints: /auth/users/register and /auth/users/login.
-1. As an unregistered user of FTBAPI, I want the ability to create a new user to become a registered user.
-1. As a registered user of FTBAPI, I should be able to log in and then have access to the other endpoints.
-1. As a registered user of FTBAPI, I should be able to create my beverage types enabling me to have beverage types of my choosing.
-1. As a registered user of FTBAPI, I should be able to see a listing of all beverages types and assigned beverages in order to easily see that listing created by me.
-1. As a registered user of FTBAPI, I should be able to update any of my beverage types and change the beverage type to another name of my choosing.
-1. As a registered user of FTBAPI, I should be able to delete any of my beverage types of my choosing.
-1. As a registered user of FTBAPI, I should be able to create my own beverages under any available beverage types with the following information:  name, description, pairing, goodToKnow, and proTip.
-1. As a registered user of FTBAPI, I should be able to update my own beverage description, pairing, goodToKnow, and proTip.
-1. As a registered user of FTBAPI, I should be able to delete any beverage created by me to prevent it from showing up in any listing.
-1. As a registered user of FTBAPI, I should be able to see a listing of all beverages created by me.
-1. As a registered user of FTBAPI, I should be able to see a listing of all beverages for a specific type created by me.
-1. As a registered user of FTBAPI, I should be able to obtain a beverage for a specific type created by me.
+1. Users should be able to create and maintain an employee record.
+2. Users should be able to set an employee role as DOA or regular employee role like a Buyer. 
+2. User should be able to assign the DOA (delegation of authority) to a specific GL (General Ledger) expense account based on employee role which is required for this role.
+3. Users should be able to create and maintain a supplier record.
+4. Users should be able to create and maintain an item-favorites record.
+3. Users should be able to see a listing of all purchase order requisitions.
 
 ## Usage
 
-Using an API platform like Postman, as a registered user, you can access all operational endpoints of the Family Time Beverage API (FTBA) which are available on port 9092.  PostgresSQL is the database used and a new 'Database' entry, named beverages, needs to be created.  PGAdmin is a web-based GUI which can be used for this task as it can communicate with your Postgres database.
+Using an API platform like Postman, you can access all operational endpoints of the Procure-To-Pay application which are available on port 8080.  For now, the H2 in memory database was chosen for this proof of concept; however, the endpoints will be consumed by a client application.
 
 ![FTBAPI ERD](./src/main/resources/assets/FTBAPI_ERD.png)
 
@@ -181,7 +199,9 @@ RESPONSE 200 OK
 ]
 ```
 
-
+5.    Users should be able to create a purchase requisition while providing the required details.
+6.  Users of a DOA role should be able to access a list of POs to approve.
+3. Users should be able to delete an item from an open purchase order. Users should be able to update detail information on an open purchase order. Users should not be able to update the created date on a purchase order. Users should not be able to update any information on a purchase order once approved or closed.
 
 ## Technologies Used
 
